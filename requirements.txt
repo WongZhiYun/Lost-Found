@@ -1,0 +1,10 @@
+Flask
+Flask-SQLAlchemy
+Flask-Migrate
+python-dotenv
+Werkzeug
+Pillow
+ImageHash
+transformers
+torch
+faiss-cpu
