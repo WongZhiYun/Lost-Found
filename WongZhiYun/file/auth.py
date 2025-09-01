@@ -23,27 +23,33 @@ def login():
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('auth.login'))
+    return redirect(url_for('views.home'))
 
 @auth.route('/sign_up', methods=['GET', 'POST'])
 def sign_up():
     if request.method == 'POST':
         email = request.form.get('email')
-        name = request.form.get('name')
+        username = request.form.get('username')
         password = request.form.get('password')
+
+        if not password:
+            flash("Password field is empty!", category="error")
+            return redirect(url_for("auth.sign_up"))
 
         existing_user = User.query.filter_by(email=email).first()
         if existing_user:
             flash("Email already exists", category='error')
-        else:
-            new_user = User(
-                email=email,
-                name=name,
-                password=generate_password_hash(password, method='sha256')
-            )
-            db.session.add(new_user)
-            db.session.commit()
-            flash("Account created!", category='success')
-            return redirect(url_for('auth.login'))
+            return redirect(url_for('auth.sign_up'))
+    
+        new_user = User(
+            email=email,
+            username=username,
+            password=generate_password_hash(password, method='sha256')
+        )
+        db.session.add(new_user)
+        db.session.commit()
+        
+        flash("Account created!", category='success')
+        return redirect(url_for('auth.login'))
 
     return render_template("sign_up.html")
