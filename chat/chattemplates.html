@@ -3,53 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Messenger Clone</title>
-  <style>
-    body { margin: 0; font-family: Arial, sans-serif; }
-    .container { display: flex; height: 100vh; }
-    .sidebar {
-      width: 25%; background: #f0f0f0; padding: 10px;
-      display: flex; flex-direction: column;
-    }
-    .sidebar h2 { margin: 0 0 10px; }
-    .user {
-      display: flex; align-items: center; padding: 8px;
-      cursor: pointer; border-radius: 8px;
-    }
-    .user:hover { background: #ddd; }
-    .user img {
-      width: 35px; height: 35px; border-radius: 50%; margin-right: 10px;
-    }
-    .chat-area {
-      flex: 1; display: flex; flex-direction: column;
-      border-left: 1px solid #ccc;
-    }
-    .chat-header {
-      padding: 10px; border-bottom: 1px solid #ccc; font-weight: bold;
-    }
-    .messages {
-      flex: 1; padding: 10px; overflow-y: auto;
-      display: flex; flex-direction: column;
-    }
-    .msg {
-      max-width: 60%; padding: 8px 12px; border-radius: 15px;
-      margin: 4px 0;
-    }
-    .sent { align-self: flex-end; background: #0084ff; color: white; }
-    .received { align-self: flex-start; background: #e4e6eb; }
-    .chat-input {
-      display: flex; border-top: 1px solid #ccc; padding: 10px;
-    }
-    .chat-input input {
-      flex: 1; padding: 10px; border: 1px solid #ccc;
-      border-radius: 20px; outline: none;
-    }
-    .chat-input button {
-      margin-left: 10px; padding: 10px 20px;
-      border: none; border-radius: 20px; background: #0084ff; color: white;
-      cursor: pointer;
-    }
-    .chat-input button:hover { background: #006edc; }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -57,7 +11,7 @@
   <!-- Sidebar -->
   <div class="sidebar">
     <h2>Users</h2>
-    <div class="user" onclick="selectUser('user')">
+    <div class="user" onclick="selectUser('Bob')">
       <img src="https://robohash.org/bob?bgset=bg2" alt="">
       <span>Bob</span>
     </div>
@@ -72,50 +26,13 @@
     <div class="chat-header" id="chatHeader">Select a user to chat</div>
     <div class="messages" id="messages"></div>
     <div class="chat-input">
-      <input id="msgInput" type="text" placeholder="Type a message..." onkeydown="if(event.key==='Enter'){sendMessage()}">
+      <input id="msgInput" type="text" placeholder="Type a message..." 
+             onkeydown="if(event.key==='Enter'){sendMessage()}">
       <button onclick="sendMessage()">Send</button>
     </div>
   </div>
 </div>
 
-<script>
-  let currentUser = null;
-  const messagesDiv = document.getElementById("messages");
-  const header = document.getElementById("chatHeader");
-
-  function selectUser(user) {
-    currentUser = user;
-    header.innerText = "Chat with " + user;
-    messagesDiv.innerHTML = ""; // clear messages
-  }
-
-  function sendMessage() {
-    if (!currentUser) {
-      alert("Select a user first!");
-      return;
-    }
-    const input = document.getElementById("msgInput");
-    if (input.value.trim() === "") return;
-
-    // create sent message
-    const sent = document.createElement("div");
-    sent.className = "msg sent";
-    sent.textContent = input.value;
-    messagesDiv.appendChild(sent);
-
-    // auto reply (demo)
-    setTimeout(() => {
-      const reply = document.createElement("div");
-      reply.className = "msg received";
-      reply.textContent = currentUser + " says hi!";
-      messagesDiv.appendChild(reply);
-      messagesDiv.scrollTop = messagesDiv.scrollHeight;
-    }, 800);
-
-    messagesDiv.scrollTop = messagesDiv.scrollHeight;
-    input.value = "";
-  }
-</script>
-
+<script src="script.js"></script>
 </body>
 </html>
