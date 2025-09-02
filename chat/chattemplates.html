@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Lost & Found MMU Chat</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; background: #f9f9f9; }
+    #chat-box { border: 1px solid #ccc; background: white; padding: 10px; height: 300px; overflow-y: scroll; }
+    .msg { margin: 5px 0; padding: 8px; border-radius: 5px; background: #e6f3ff; }
+    .time { font-size: 0.8em; color: gray; }
+    #message-input { width: 80%; padding: 8px; }
+    #send-btn { padding: 8px 12px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h2>Lost & Found MMU Chat (1-to-1 with Admin)</h2>
+  <div id="chat-box">
+    {% for msg in messages %}
+      <div class="msg">
+        {{ msg.text }} <span class="time">({{ msg.timestamp }})</span>
+      </div>
+    {% endfor %}
+  </div>
+  <br>
+  <input type="text" id="message-input" placeholder="Type a message..." />
+  <button id="send-btn">Send</button>
+
+  <script>
+    async function sendMessage() {
+      const message = document.getElementById("message-input").value;
+      if (!message.trim()) return;
+
+      const formData = new FormData();
+      formData.append("message", message);
+
+      const response = await fetch("/send", {
+        method: "POST",
+        body: formData
+      });
+      const data = await response.json();
+
+      const chatBox = document.getElementById("chat-box");
+      chatBox.innerHTML = "";
+      data.messages.forEach(msg => {
+        chatBox.innerHTML += `<div class="msg">${msg.text} <span class="time">(${msg.time})</span></div>`;
+      });
+
+      document.getElementById("message-input").value = "";
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    document.getElementById("send-btn").addEventListener("click", sendMessage);
+    document.getElementById("message-input").addEventListener("keydown", (e) => {
+      if (e.key === "Enter") sendMessage();
+    });
+  </script>
+</body>
+</html>
