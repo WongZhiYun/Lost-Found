@@ -8,5 +8,5 @@ def home():
     if current_user.is_authenticated:
         return render_template("base.html", username=current_user.username)
     else:
-        return render_template("base.html", name=current_user.name)
+        return render_template("base.html", username=None)
 
