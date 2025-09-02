@@ -1,0 +1,7 @@
+<!-- users.html -->
+<h2>All Users</h2>
+<ul>
+  {% for u in users %}
+    <li><a href="{{ url_for('views.chat', user_id=u.id) }}">Chat with {{ u.username }}</a></li>
+  {% endfor %}
+</ul>

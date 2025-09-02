@@ -15,8 +15,7 @@ db = SQLAlchemy(app)
 
 # --- EMAIL CONFIG ---
 SENDER_EMAIL = "lostandfoundmmu@gmail.com"
-SENDER_PASSWORD = "lostandfoundmmu.1"   # ⚠️ Use Gmail App Password in production
-ADMIN_EMAIL = "admin@example.com"       # Replace with actual admin email
+SENDER_PASSWORD = "lostandfoundmmu.1"   # Use Gmail App Password in production
 
 
 # --- MODELS ---
@@ -39,7 +38,6 @@ def send_email(user_name, user_message):
     """Send email notification to admin with chat message"""
     msg = MIMEMultipart()
     msg["From"] = formataddr(("Lost and Found MMU", SENDER_EMAIL))  # Always system email
-    msg["To"] = ADMIN_EMAIL
     msg["Subject"] = f"New Message from {user_name}"
 
     body = f"User: {user_name}\n\nMessage:\n{user_message}"
@@ -49,7 +47,7 @@ def send_email(user_name, user_message):
         server = smtplib.SMTP("smtp.gmail.com", 587)
         server.starttls()
         server.login(SENDER_EMAIL, SENDER_PASSWORD)
-        server.sendmail(SENDER_EMAIL, ADMIN_EMAIL, msg.as_string())
+        server.sendmail(SENDER_EMAIL, msg.as_string())
         server.quit()
         print("✅ Email sent successfully to admin!")
     except Exception as e:

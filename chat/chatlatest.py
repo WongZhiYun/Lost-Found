@@ -30,4 +30,4 @@ def index():
                 .props('rounded outlined').classes('flex-grow') \
                 .on('keydown.enter', send)
 
-ui.run()
+ui.run()       

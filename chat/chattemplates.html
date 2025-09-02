@@ -2,57 +2,120 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Lost & Found MMU Chat</title>
+  <title>Messenger Clone</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 20px; background: #f9f9f9; }
-    #chat-box { border: 1px solid #ccc; background: white; padding: 10px; height: 300px; overflow-y: scroll; }
-    .msg { margin: 5px 0; padding: 8px; border-radius: 5px; background: #e6f3ff; }
-    .time { font-size: 0.8em; color: gray; }
-    #message-input { width: 80%; padding: 8px; }
-    #send-btn { padding: 8px 12px; cursor: pointer; }
+    body { margin: 0; font-family: Arial, sans-serif; }
+    .container { display: flex; height: 100vh; }
+    .sidebar {
+      width: 25%; background: #f0f0f0; padding: 10px;
+      display: flex; flex-direction: column;
+    }
+    .sidebar h2 { margin: 0 0 10px; }
+    .user {
+      display: flex; align-items: center; padding: 8px;
+      cursor: pointer; border-radius: 8px;
+    }
+    .user:hover { background: #ddd; }
+    .user img {
+      width: 35px; height: 35px; border-radius: 50%; margin-right: 10px;
+    }
+    .chat-area {
+      flex: 1; display: flex; flex-direction: column;
+      border-left: 1px solid #ccc;
+    }
+    .chat-header {
+      padding: 10px; border-bottom: 1px solid #ccc; font-weight: bold;
+    }
+    .messages {
+      flex: 1; padding: 10px; overflow-y: auto;
+      display: flex; flex-direction: column;
+    }
+    .msg {
+      max-width: 60%; padding: 8px 12px; border-radius: 15px;
+      margin: 4px 0;
+    }
+    .sent { align-self: flex-end; background: #0084ff; color: white; }
+    .received { align-self: flex-start; background: #e4e6eb; }
+    .chat-input {
+      display: flex; border-top: 1px solid #ccc; padding: 10px;
+    }
+    .chat-input input {
+      flex: 1; padding: 10px; border: 1px solid #ccc;
+      border-radius: 20px; outline: none;
+    }
+    .chat-input button {
+      margin-left: 10px; padding: 10px 20px;
+      border: none; border-radius: 20px; background: #0084ff; color: white;
+      cursor: pointer;
+    }
+    .chat-input button:hover { background: #006edc; }
   </style>
 </head>
 <body>
-  <h2>Lost & Found MMU Chat (1-to-1 with Admin)</h2>
-  <div id="chat-box">
-    {% for msg in messages %}
-      <div class="msg">
-        {{ msg.text }} <span class="time">({{ msg.timestamp }})</span>
-      </div>
-    {% endfor %}
+
+<div class="container">
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2>Users</h2>
+    <div class="user" onclick="selectUser('user')">
+      <img src="https://robohash.org/bob?bgset=bg2" alt="">
+      <span>Bob</span>
+    </div>
+    <div class="user" onclick="selectUser('Charlie')">
+      <img src="https://robohash.org/charlie?bgset=bg2" alt="">
+      <span>Charlie</span>
+    </div>
   </div>
-  <br>
-  <input type="text" id="message-input" placeholder="Type a message..." />
-  <button id="send-btn">Send</button>
 
-  <script>
-    async function sendMessage() {
-      const message = document.getElementById("message-input").value;
-      if (!message.trim()) return;
+  <!-- Chat Area -->
+  <div class="chat-area">
+    <div class="chat-header" id="chatHeader">Select a user to chat</div>
+    <div class="messages" id="messages"></div>
+    <div class="chat-input">
+      <input id="msgInput" type="text" placeholder="Type a message..." onkeydown="if(event.key==='Enter'){sendMessage()}">
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+</div>
 
-      const formData = new FormData();
-      formData.append("message", message);
+<script>
+  let currentUser = null;
+  const messagesDiv = document.getElementById("messages");
+  const header = document.getElementById("chatHeader");
 
-      const response = await fetch("/send", {
-        method: "POST",
-        body: formData
-      });
-      const data = await response.json();
+  function selectUser(user) {
+    currentUser = user;
+    header.innerText = "Chat with " + user;
+    messagesDiv.innerHTML = ""; // clear messages
+  }
 
-      const chatBox = document.getElementById("chat-box");
-      chatBox.innerHTML = "";
-      data.messages.forEach(msg => {
-        chatBox.innerHTML += `<div class="msg">${msg.text} <span class="time">(${msg.time})</span></div>`;
-      });
-
-      document.getElementById("message-input").value = "";
-      chatBox.scrollTop = chatBox.scrollHeight;
+  function sendMessage() {
+    if (!currentUser) {
+      alert("Select a user first!");
+      return;
     }
+    const input = document.getElementById("msgInput");
+    if (input.value.trim() === "") return;
 
-    document.getElementById("send-btn").addEventListener("click", sendMessage);
-    document.getElementById("message-input").addEventListener("keydown", (e) => {
-      if (e.key === "Enter") sendMessage();
-    });
-  </script>
+    // create sent message
+    const sent = document.createElement("div");
+    sent.className = "msg sent";
+    sent.textContent = input.value;
+    messagesDiv.appendChild(sent);
+
+    // auto reply (demo)
+    setTimeout(() => {
+      const reply = document.createElement("div");
+      reply.className = "msg received";
+      reply.textContent = currentUser + " says hi!";
+      messagesDiv.appendChild(reply);
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }, 800);
+
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    input.value = "";
+  }
+</script>
+
 </body>
 </html>
