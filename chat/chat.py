@@ -1,78 +1,44 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, session
+from flask_socketio import SocketIO, join_room, emit
 import sqlite3
-import datetime
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'secret!'
+socketio = SocketIO(app, cors_allowed_origins="*")
 
-# --- Initialize DB if not exists ---
-def init_db():
-    conn = sqlite3.connect("users.db")
-    c = conn.cursor()
+# Track connected users per room
+users = {}
 
-    # users table
-    c.execute("""
-    CREATE TABLE IF NOT EXISTS users (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        username TEXT UNIQUE
-    )
-    """)
-
-    # messages table
-    c.execute("""
-    CREATE TABLE IF NOT EXISTS messages (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        sender TEXT,
-        receiver TEXT,
-        text TEXT,
-        timestamp TEXT
-    )
-    """)
-
-    conn.commit()
-    conn.close()
-
-init_db()
-
-# --- Routes ---
-
-@app.route("/")
+@app.route('/')
 def index():
-    return render_template("index.html")
+    # Assume user is logged in
+    if 'username' not in session:
+        session['username'] = 'zhiyun0506'  # example
+    current_user = session['username']
 
-@app.route("/users")
-def get_users():
+    # Get all users except the current user
     conn = sqlite3.connect("users.db")
     c = conn.cursor()
-    c.execute("SELECT username FROM users ORDER BY username")
-    users = [row[0] for row in c.fetchall()]
+    c.execute("SELECT username FROM users WHERE username != ?", (current_user,))
+    all_users = [row[0] for row in c.fetchall()]
     conn.close()
-    return jsonify(users)
 
-@app.route("/send", methods=["POST"])
-def send_message():
-    data = request.json
-    user = data.get("user")        # receiver
-    sender = data.get("sender")    # sender
-    text = data.get("text")
-    timestamp = datetime.datetime.now().strftime("%H:%M")
+    # Render template and pass users
+    return render_template('index.html', current_user=current_user, users=all_users)
 
-    conn = sqlite3.connect("users.db")
-    c = conn.cursor()
-    c.execute("INSERT INTO messages (sender, receiver, text, timestamp) VALUES (?, ?, ?, ?)",
-              (sender, user, text, timestamp))
-    conn.commit()
-    conn.close()
-    return jsonify({"status": "ok"})
+@socketio.on('join')
+def on_join(data):
+    username = session['username']
+    room = data['room']
+    join_room(room)
+    users[username] = room
+    emit('status', {'msg': f'{username} has joined the chat'}, room=room)
 
-@app.route("/messages/<receiver>")
-def get_messages(receiver):
-    conn = sqlite3.connect("users.db")
-    c = conn.cursor()
-    c.execute("SELECT sender, text, timestamp FROM messages WHERE receiver=? OR sender=? ORDER BY id",
-              (receiver, receiver))
-    msgs = c.fetchall()
-    conn.close()
-    return jsonify(msgs)
+@socketio.on('send_message')
+def handle_message(data):
+    username = session['username']
+    room = data['room']
+    emit('receive_message', {'username': username, 'msg': data['msg']}, room=room)
 
-if __name__ == "__main__":
-    app.run(debug=True)
+if __name__ == '__main__':
+    socketio.run(app, debug=True)
