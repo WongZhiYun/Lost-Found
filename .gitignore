@@ -1,6 +1,1 @@
-# Ignore database files
-*.db
-instance/*.db
-WongZhiYun/instance/*.db
-WongZhiYun/file/instance/*.db
-
+**/instance/*.db
