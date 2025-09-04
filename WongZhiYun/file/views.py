@@ -9,4 +9,10 @@ def home():
         return render_template("base.html", username=current_user.username)
     else:
         return render_template("base.html", username=None)
+    
+
+
+
+
+
 
