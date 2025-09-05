@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Chat</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="chat-area">
+    <div class="chat-header" id="chatHeader">Chatting with...</div>
+    <div class="messages" id="messages"></div>
+    <div class="chat-input">
+      <input id="msgInput" type="text" placeholder="Type a message..." 
+             onkeydown="if(event.key==='Enter'){sendMessage()}">
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <script>
+    // Example: get user from URL
+    const params = new URLSearchParams(window.location.search);
+    const user = params.get('user');
+    document.getElementById('chatHeader').textContent = `Chatting with ${user}`;
+
+    function sendMessage() {
+      const input = document.getElementById('msgInput');
+      const msg = input.value.trim();
+      if (msg) {
+        const msgDiv = document.createElement('div');
+        msgDiv.textContent = `You: ${msg}`;
+        document.getElementById('messages').appendChild(msgDiv);
+        input.value = '';
+      }
+    }
+  </script>
+</body>
+</html>
