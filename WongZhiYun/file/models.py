@@ -1,5 +1,6 @@
 from . import db
 from flask_login import UserMixin
+from datetime import datetime
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -10,8 +11,6 @@ class User(db.Model, UserMixin):
     posts = db.relationship('Post', backref='author',lazy=True)
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
     profile_image = db.Column(db.String(200), default="default.png")
-
-from datetime import datetime
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
