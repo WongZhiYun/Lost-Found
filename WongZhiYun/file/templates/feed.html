@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name = "viewport" content ="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="{{ url_for('static', filename='feed.css') }}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css">
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+        <title>Lost and Found Board</title>
+    </head>
+
+    <body>
+        <nav class="navbar">
+    
+            <!-- Left: Menu Button -->
+            <a href="{{ url_for('views.home') }}">
+                <i class="fa-solid fa-home"></i>
+            </a>
+    
+            <!-- Middle: Search Bar -->
+            <form class="search">
+                <input class="search-input" type="search" placeholder="Search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </form>
+    
+            <!-- Right: User Button -->
+            <i class= "fa-solid fa-user" onclick="toggleMenu()"></i>
+
+            <div class="acc-wrap" id="accMenu">
+                <div class="acc">
+                    <div class="acc-menu">
+                        <i class="fa-solid fa-user"></i>
+                        <!-- Always show username directly -->
+                         <h2>{{ current_user.username }}</h2>
+                    </div>
+                    <hr>
+                    <!-- Menu links for logged-in user -->
+                    <a href="{{ url_for('views.profile') }}" class="acc-menu-link">
+                        <i class='bx bxs-user-detail'></i>
+                        <p>My Profile</p>
+                    </a>
+                    <a href="/" class="acc-menu-link">
+                        <i class='bx bxs-edit'></i>
+                        <p>Edit Profile</p>
+                    </a>
+                    <a href="{{ url_for('views.my_posts') }}" class="acc-menu-link">
+                        <p>My Posts</p>
+                    </a>
+                    <a href="{{ url_for('auth.logout') }}" class="acc-menu-link">
+                        <i class='bx bxs-log-out'></i>
+                        <p>Logout</p>
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <h1>Board</h1>
+
+        <!-- Filter bar -->
+        <div class="filter-bar">
+            <a href="{{ url_for('views.feed', type='all') }}" class="{{ 'active' if filter_type=='all' else '' }}">All</a>
+            <a href="{{ url_for('views.feed', type='lost') }}" class="{{ 'active' if filter_type=='lost' else '' }}">Lost</a>
+        <a href="{{ url_for('views.feed', type='found') }}" class="{{ 'active' if filter_type=='found' else '' }}">Found</a>
+        </div>
+        <a href="{{ url_for('views.report_post') }}" class="create-post-btn">
+            <i class="fa-solid fa-plus"></i>
+        </a>
+
+        <div class="card-container">
+            {% for post in posts %}
+            <div class="card">
+                {% if post.image %}
+                <img src="{% if post.image %}{{ url_for('static', filename='uploads/' + post.image) }}
+                {% else %}
+                {{ url_for('static', filename='placeholder.png') }}
+                {% endif %}" 
+                alt="Item image">
+                {% endif %}
+                <div class="card-content">
+                    <h3>{{ post.title }}</h3>
+                    <p>{{ post.description }}</p>
+                    <small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
+                    {% if post.type == "lost" %}
+                    <span class="badge lost">Lost</span>
+                    {% else %}
+                    <span class="badge found">Found</span>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </body>
+</html>
+
+<script>
+    let accMenu = document.getElementById("accMenu");
+
+    function toggleMenu(){
+        accMenu.classList.toggle("open-menu");
+    }
+</script>
