@@ -8,20 +8,22 @@
         <title>Home</title>
     </head>
     <body>
+        <!--Navbar-->
         <header>
             <div>
                 <nav class = "navbar">
                     <a href="/" class="logo">
-                    <img src="{{ url_for('static', filename='images/logo 1.png') }}" alt="logo">
-                    <h2>Lost And Found</h2>
+                        <img src="{{ url_for('static', filename='images/logo 1.png') }}" alt="logo">
+                        <h2>Lost And Found</h2>
                     </a>
                     <ul class="links">
-                        <li><a href="#home">Home</a></li>
+                        <li><a href="{{ url_for('views.home') }}">Home</a></li>
                         <li><a href="#about">About Us</a></li>
                         <li><a href="/">Services</a></li>
                     </ul>
                     <i class='bx bxs-user' onclick="toggleMenu()"></i>
 
+                    <!--Accound dropdown-->
                     <div class="acc-wrap" id="accMenu">
                         <div class="acc">
                             <div class="acc-menu">
@@ -35,11 +37,11 @@
                             <hr>
 
                             {% if current_user.is_authenticated %}
-                                <a href="/" class="acc-menu-link">
+                                <a href="{{ url_for('views.profile') }}" class="acc-menu-link">
                                     <i class='bx bxs-user-detail'></i>
                                     <p>User Profile</p>
                                 </a>
-                                <a href="/" class="acc-menu-link">
+                                <a href="{{ url_for('views.edit_profile') }}" class="acc-menu-link">
                                     <i class='bx bxs-edit'></i>
                                     <p>Edit Profile</p>
                                 </a>
@@ -48,11 +50,11 @@
                                     <p>Logout</p>
                                 </a>
                             {% else %}
-                                <a href="/login" class="acc-menu-link">
+                                <a href="{{ url_for('auth.login') }}" class="acc-menu-link">
                                     <i class='bx bxs-log-in'></i>
                                     <p>Login</p>
                                 </a>
-                                <a href="/sign_up" class="acc-menu-link">
+                                <a href="{{ url_for('auth.sign_up') }}" class="acc-menu-link">
                                     <i class='bx bxs-user-account'></i>
                                     <p>Create Account</p>
                                 </a>
@@ -63,50 +65,15 @@
             </div>
         </header>
 
-        <section class="home" id="home">
-            <div class="home-content">
-                <h1>MMU<br>Lost And Found</h1>
-                <p>Wonder where is your stuffs or found something but not belongs to you?</p>
-                <div>
-                    <button type="button">LOST ITEM</button>
-                    <button type="button">FOUND ITEM</button>
-                </div>
-            </div>
-        </section>
+        <!-- Main Page Content -->
+        {% block content %}{% endblock %}
 
-        <!--about section design-->
-        <section class="about" id="about">
-            <div class="about-img">
-                <img src="{{ url_for('static', filename='images/aboutimg.png') }}">
-            </div>
+        <script>
+            let accMenu = document.getElementById("accMenu");
 
-            <div class="about-content">
-                <h2 class="abt-heading">About Us</h2>
-                <h3>Lost something? Found something? Let's get it home!</h3>
-                <p>Lost & Found is an online platform dedicated to bridging the gap between lost belongings and their owners. 
-                    We provide an organized system for reporting, searching, and returning items in a transparent and secure way.
-                    Our goal is to reduce stress, save time, and build a trustworthy community where lost things can be reunited with the people who value them.</p>
-            </div>
-        </section>
-
-
-<script>
-    let accMenu = document.getElementById("accMenu");
-
-    function toggleMenu(){
-        accMenu.classList.toggle("open-menu");
-    }
-
-    window.addEventListener("scroll", function() {
-        const navbar = document.querySelector(".navbar");
-        if (window.scrollY > 50) {
-            navbar.classList.add("scrolled");
-        } else {
-            navbar.classList.remove("scrolled");
-        }
-    })
-</script>        
-        </header>
-
-        
+            function toggleMenu(){
+                accMenu.classList.toggle("open-menu");
+            }
+        </script>
     </body>
+</html>

@@ -4,18 +4,11 @@
     box-sizing: border-box;
 }
 
-header{
-    background-image: linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5),rgba(0,0,0,0.5)),url(images/mmu.jpg);
-    height: 100vh;
-    background-size: cover;
-    background-position: center;
-    min-height: 100px;
-}
-
 .navbar {
+    background-color: #918674;
     display: flex;
     position: fixed;
-    padding: 22px 0;
+    padding: 15px 0;
     top: 0;
     left: 0;
     width: 100%;
@@ -35,6 +28,7 @@ header{
 .navbar .logo img{
     height: 50px;
     width: auto;
+    margin-left: 15px;
 }
 
 .navbar .logo h2{
@@ -43,9 +37,10 @@ header{
 }
 
 .navbar .links{
+    justify-content: center;
     display: flex;
     list-style: none;
-    gap: 35px;
+    gap: 40px;
 }
 
 .navbar .links a {
@@ -68,10 +63,6 @@ header{
     font-size: 30px;
     padding: 10px 18px;
     cursor: pointer;
-}
-
-.navbar.scrolled{
-    background: rgb(83, 125, 239);
 }
 
 .acc-wrap{
@@ -148,77 +139,4 @@ header{
     font-weight: 600;
 }
 
-.home-content{
-    width: 100%;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    text-align: center;
-    color: rgb(243, 247, 255);
-}
 
-.home-content h1{
-    font-size: 70px;
-    margin-top: 80px;
-}
-
-.home-content p{
-    margin: 20px auto;
-    font-weight: 100;
-    line-height: 25px;
-}
-
-button{
-    width: 200px;
-    padding: 15px 0;
-    text-align: center;
-    margin: 20px 10px;
-    border-radius: 20px;
-    font-weight: bold;
-    border: 2px solid rgb(185, 212, 254);
-    background: transparent;
-    color: aliceblue;
-    cursor: pointer;
-    
-}
-
-button:hover{
-    border: 1px solid rgb(185, 212, 254);
-    background: rgb(82, 140, 234);
-    transition: 0.5s;
-}
-
-
-/*about section css*/
-.about{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 2rem;
-    background-color: aliceblue;
-    width: 100%;
-    height: 100vh;
-}
-
-.about-img img{
-    width: 35vw;   
-}
-
-.abt-heading{
-    text-align: center;
-    font-size: 4.5rem;
-}
-
-.about-content h2{
-    text-align: left;
-    line-height: 1.2;
-}
-
-.about-content h3{
-    font-size: 2.6rem;
-}
-
-.about-content p{
-    font-size: 1.6rem;
-    margin: 2rem 0 3rem;
-}
