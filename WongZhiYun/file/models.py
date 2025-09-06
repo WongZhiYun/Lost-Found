@@ -7,6 +7,9 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(150), nullable=False)
     username = db.Column(db.String(150), nullable=False)
     role = db.Column(db.String(20), default="user")
+    posts = db.relationship('Post', backref='author',lazy=True)
+    date_created = db.Column(db.DateTime, default=datetime.utcnow)
+    profile_image = db.Column(db.String(200), default="default.png")
 
 from datetime import datetime
 
