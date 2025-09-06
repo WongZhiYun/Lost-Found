@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Profile{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}">
+
+<div class="profile-container">
+    <!--User Header-->
+    <div class="profile-header">
+        {% if user.profile_image %}
+            <img src="{{ url_for('static', filename='profile_pics/' + user.profile_image) }}" 
+            alt="Profile Picture" class="profile-img">
+        {% else %}
+            <div class="profile-avatar">
+            {{ user.username[0]|upper }}
+            </div>
+        {% endif %}
+        <div class="profile-info">
+            <h2>{{ user.username }}</h2>
+            <p>Email: {{ user.email }}</p>
+            <p>Joined: {{ user.date_created.strftime('%Y-%m-%d') }}</p>
+            <div class="profile-actions">
+                <a href="{{ url_for('views.edit_profile') }}">Edit Profile</a>
+                <a href="{{ url_for('auth.logout') }}">Logout</a>
+            </div>
+        </div>
+    </div>
+
+    <!--User Posts-->
+    <div class="profile-posts">
+        <h2>Your Posts</h2>
+        {% for post in posts %}
+            <div class="post-card">
+                {% if post.image %}
+                <img src="{{ url_for('static', filename='uploads/' ~ post.image) }}" alt="Post image">
+                {% endif %}
+                <h4>{{ post.title }}</h4>
+                <p>{{ post.description }}</p>
+                <small>{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
+            </div>
+        {% else %}
+            <p>You haven’t posted anything yet.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+
+

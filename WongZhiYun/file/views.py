@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, current_app
+from flask import Blueprint, render_template, request, redirect, url_for, current_app, flash
 from flask_login import login_required, current_user
 from .models import Post, db
 from werkzeug.utils import secure_filename
@@ -59,5 +59,45 @@ def feed():
 
     return render_template("feed.html", posts=posts, filter_type=filter_type)
 
+@views.route('/my_posts')
+@login_required
+def my_posts():
+    posts = Post.query.filter_by(user_id=current_user.id).order_by(Post.date_posted.desc()).all()
+    return render_template('feed.html',posts=posts,filter_type='all')
+
+@views.route('/profile')
+@login_required
+def profile():
+    posts = Post.query.filter_by(user_id=current_user.id).order_by(Post.date_posted.desc()).all()
+    return render_template('profile.html', user=current_user, posts=posts)
+
+
+@views.route('/edit_profile', methods=['GET', 'POST'])
+@login_required
+def edit_profile():
+    if request.method == 'POST':
+        new_username = request.form.get('username')
+        new_email = request.form.get('email')
+        profile_image = request.files.get('profile_image')
+        
+
+        if profile_image:
+            filename = secure_filename(profile_image.filename)
+            upload_path = os.path.join(current_app.root_path, 'static/profile_pics', filename)
+            profile_image.save(upload_path)
+            current_user.profile_image = filename
+
+        # Update username & email
+        if new_username:
+            current_user.username = new_username
+        if new_email:
+            current_user.email = new_email
+     
+
+        db.session.commit()
+        flash("Profile updated successfully!", "success")
+        return redirect(url_for('views.profile'))
+
+    return render_template("edit_profile.html", user=current_user)
 
 
