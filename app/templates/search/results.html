@@ -1,9 +1,31 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Search Module</title>
+  <meta charset="utf-8" />
+  <title>Search</title>
 </head>
 <body>
-    <h1>{{ message }}</h1>
+  <h1>Lost & Found Search</h1>
+
+  <form method="get" action="{{ url_for('search.index') }}">
+    <input type="text" name="q" value="{{ q or '' }}" placeholder="Search keywords" />
+    <select name="category">
+      <option value="">All</option>
+      {% for c in categories %}
+        <option value="{{ c }}" {% if category==c %}selected{% endif %}>{{ c }}</option>
+      {% endfor %}
+    </select>
+    <button type="submit">Search</button>
+  </form>
+
+  {% if results %}
+    <ul>
+    {% for r in results %}
+      <li>{{ r.title }} ({{ r.category }})</li>
+    {% endfor %}
+    </ul>
+  {% else %}
+    <p>No results. (Waiting for Report model)</p>
+  {% endif %}
 </body>
 </html>

@@ -1,8 +1,21 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, request, render_template
+
 
 # create blueprint
-bp = Blueprint('search', __name__, template_folder='templates')
+bp = Blueprint('search', __name__, template_folder='../templates')
 
-@bp.route('/')
+@bp.route('/', methods=['GET'])
 def index():
-    return render_template('search/results.html', message="Search module is working!")
+    q = (request.args.get('q') or '').strip()
+    category = (request.args.get('category') or '').strip()
+
+    results = []
+    categories = []
+    
+    return render_template(
+        'search/results.html',
+        results=results,
+        categories=categories,
+        q=q,
+        category=category
+    )
