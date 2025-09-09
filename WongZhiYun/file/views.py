@@ -9,9 +9,9 @@ views = Blueprint('views', __name__)
 @views.route('/')
 def home():
     if current_user.is_authenticated:
-        return render_template("base.html", username=current_user.username)
+        return render_template("home.html", username=current_user.username)
     else:
-        return render_template("base.html", username=None)
+        return render_template("home.html", username=None)
     
 @views.route('/report', methods=['GET', 'POST'])
 def report_post():
