@@ -58,6 +58,12 @@ body h1 {
   color: #555;
 }
 
+.navbar i.fa-comments{
+  font-size: 20px;
+  cursor: pointer;
+  color: #efe7da;
+}
+
 /* Right: user icon */
 .navbar i.fa-user {
   font-size: 22px;
