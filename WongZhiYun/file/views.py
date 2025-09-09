@@ -1,0 +1,103 @@
+from flask import Blueprint, render_template, request, redirect, url_for, current_app, flash
+from flask_login import login_required, current_user
+from .models import Post, db
+from werkzeug.utils import secure_filename
+import os
+
+views = Blueprint('views', __name__)
+
+@views.route('/')
+def home():
+    if current_user.is_authenticated:
+        return render_template("home.html", username=current_user.username)
+    else:
+        return render_template("home.html", username=None)
+    
+@views.route('/report', methods=['GET', 'POST'])
+def report_post():
+    if request.method == 'POST':
+        title = request.form.get('title')
+        description = request.form.get('description')
+        status = request.form.get('status')
+        location = request.form.get('location')
+        date = request.form.get('date')
+
+        # handle image
+        image_file = request.files.get('image')
+        filename = None
+        if image_file:
+            filename = secure_filename(image_file.filename)
+            upload_path = os.path.join(current_app.root_path, 'static/uploads', filename)
+            image_file.save(upload_path)
+
+        # save to database
+        new_post = Post(
+            title=title,
+            description=description,
+            type=status,
+            category=location,
+            image=filename,
+            author = current_user
+        )
+        db.session.add(new_post)
+        db.session.commit()
+
+        return redirect(url_for('views.feed'))
+
+    return render_template('report.html')
+
+@views.route('/feed')
+def feed():
+    filter_type = request.args.get('type', 'all')
+    
+    if filter_type == 'lost':
+        posts = Post.query.filter_by(type='lost').order_by(Post.date_posted.desc()).all()
+    elif filter_type == 'found':
+        posts = Post.query.filter_by(type='found').order_by(Post.date_posted.desc()).all()
+    else:
+        posts = Post.query.order_by(Post.date_posted.desc()).all()
+
+    return render_template("feed.html", posts=posts, filter_type=filter_type)
+
+@views.route('/my_posts')
+@login_required
+def my_posts():
+    posts = Post.query.filter_by(user_id=current_user.id).order_by(Post.date_posted.desc()).all()
+    return render_template('feed.html',posts=posts,filter_type='all')
+
+@views.route('/profile')
+@login_required
+def profile():
+    posts = Post.query.filter_by(user_id=current_user.id).order_by(Post.date_posted.desc()).all()
+    return render_template('profile.html', user=current_user, posts=posts)
+
+
+@views.route('/edit_profile', methods=['GET', 'POST'])
+@login_required
+def edit_profile():
+    if request.method == 'POST':
+        new_username = request.form.get('username')
+        new_email = request.form.get('email')
+        profile_image = request.files.get('profile_image')
+        
+
+        if profile_image:
+            filename = secure_filename(profile_image.filename)
+            upload_path = os.path.join(current_app.root_path, 'static/profile_pics', filename)
+            profile_image.save(upload_path)
+            current_user.profile_image = filename
+
+        # Update username & email
+        if new_username:
+            current_user.username = new_username
+        if new_email:
+            current_user.email = new_email
+     
+
+        db.session.commit()
+        flash("Profile updated successfully!", "success")
+        return redirect(url_for('views.profile'))
+
+    return render_template("edit_profile.html", user=current_user)
+
+
