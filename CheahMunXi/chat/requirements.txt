@@ -1,5 +1,0 @@
-python-dotenv
-nicegui 
-sqlalchemy
-werkzeug
-Faker

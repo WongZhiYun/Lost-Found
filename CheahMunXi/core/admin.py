@@ -6,11 +6,11 @@ admin.site.site_title = "Lost And Found MMU Admin"
 admin.site.index_title = "Lost And Found MMU Admin"
 
 class PostAdmin(admin.ModelAdmin):
-
-    list_display = ('title', 'publish_date', 'updated_at', 'author', 'status')
-    search_fields = ('title',)
-    list_filter = ('status',)
-    list_per_pages = 20
+    list_display = ("id", "title", "type", "category", "date_posted", "user")
+    list_filter = ("type", "category", "date_posted")
+    search_fields = ("title", "description", "category")
+    ordering = ("-date_posted",)
+    list_per_page = 20
     actions = ('set_post_to_published',)
 
     def set_post_to_published (self, request, queryset):
