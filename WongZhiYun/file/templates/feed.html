@@ -23,10 +23,20 @@
                 <i class="fa-solid fa-magnifying-glass"></i>
             </form>
 
-            <a href="/">
+            <div id="chatButton">
                 <i class="fa-solid fa-comments"></i>
-            </a>
-    
+            </div>
+
+            <!--chat window-->
+            <div id="chatWindow">
+                <div id="chatHeader">
+                    <span>Live Chat</span>
+                    <button id="closeChat">✖</button>
+                </div>
+                <iframe id="chatFrame" src=""></iframe>
+            </div>
+
+
             <!-- Right: User Button -->
             <i class= "fa-solid fa-user" onclick="toggleMenu()"></i>
 
@@ -102,4 +112,19 @@
     function toggleMenu(){
         accMenu.classList.toggle("open-menu");
     }
+
+    const chatBtn = document.getElementById("chatButton");
+    const chatWindow = document.getElementById("chatWindow");
+    const chatFrame = document.getElementById("chatFrame");
+    const closeBtn = document.getElementById("closeChat");
+
+    chatBtn.onclick = () => {
+      chatFrame.src = "http://localhost:8080"; //chat app
+      chatWindow.style.display = "flex";
+    };
+
+    closeBtn.onclick = () => {
+      chatFrame.src = ""; // unload
+      chatWindow.style.display = "none";
+    };
 </script>
