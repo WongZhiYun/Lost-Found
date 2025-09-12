@@ -1,2 +1,6 @@
 **/instance/*.db
 
+# Ignore Python cache
+__pycache__/
+*.pyc
+

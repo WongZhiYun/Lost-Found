@@ -64,11 +64,57 @@ body h1 {
   color: #efe7da;
 }
 
+
+
 /* Right: user icon */
-.navbar i.fa-user {
+#chatButton {
   font-size: 22px;
   cursor: pointer;
   color: #efe7da;
+}
+
+/* Chat window (hidden by default) */
+#chatWindow {
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+  width: 350px;
+  height: 500px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  display: none;
+  flex-direction: column;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  overflow: hidden;
+  background: white;
+}
+
+/* Chat header */
+#chatHeader {
+  background: #0078ff;
+  color: white;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#chatHeader button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#chatHeader button:hover {
+  color: #ffdddd;
+}
+
+/* iFrame (fills chat window) */
+#chatFrame {
+  flex: 1;
+  border: none;
 }
 
 .acc-wrap{
