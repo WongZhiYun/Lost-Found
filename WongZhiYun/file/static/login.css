@@ -73,7 +73,7 @@ form{
 }
 
 .form-box{
-    width: 50%;
+    width: 100%;
     height: 100%;
     background: #f5f5eb;
     display: flex;
@@ -145,7 +145,7 @@ form{
 
 .forgot-link a{
     font-size: 14.5px;
-    color: #4177eb;
+    color: #797164;
     text-decoration: underline;
     cursor: pointer;
 }

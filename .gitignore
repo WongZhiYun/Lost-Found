@@ -1,4 +1,4 @@
-**/instance/*.db
+
 
 # Ignore Python cache
 __pycache__/
