@@ -31,12 +31,11 @@
                         </label>
                     </div>
                     <button type="submit" class="btn">Register</button>
+                    <div class="login_link">
+                        <p>Already have an account?</p>
+                        <a href="{{ url_for('auth.login') }}" >Login</a>
+                    </div>
                 </form>
-            </div>
-            <div class="toggle-box">
-                <h1>Hello, Welcome!</h1>
-                <p>Already have an account?</p>
-                <a href="{{ url_for('auth.login') }}" class="btn-login">Login</a>
             </div>
         </div>
     </body>

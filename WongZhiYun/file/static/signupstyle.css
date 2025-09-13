@@ -11,12 +11,12 @@ body{
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: linear-gradient(90deg, #e2e2e2,#c9d6ff);
+    background:#e1daca;
 }
 
 .signup-box{
     position: relative;
-    width: 850px;
+    width: 500px;
     height: 550px;
     background: #fff;
     margin: 20px;
@@ -42,7 +42,7 @@ form{
 }
 
 .form-box{
-    width: 50%;
+    width: 100%;
     height: 100%;
     background: #fff;
     display: flex;
@@ -65,7 +65,7 @@ form{
     border: none;
     outline: none;
     font-size: 16px;
-    color: #333;
+    color: #675927;
     font-weight: 500;
 }
 
@@ -75,6 +75,7 @@ form{
 }
 
 .input-box i{
+    color: #797164;
     position: absolute;
     right: 20px;
     top: 50%;
@@ -83,9 +84,9 @@ form{
 }
 
 .tandc-link{
-    margin: -15px 0 15px;
+    margin: -15px 0 20px;
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-start;
 }
 
 .tandc-link a{
@@ -98,7 +99,7 @@ form{
 .btn{
     width: 100%;
     height: 48px;
-    background: #708ef0;
+    background: #797164;
     border-radius: 15px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border: none;
@@ -110,77 +111,33 @@ form{
 }
 
 .btn:hover{
-    background: #3a73ed;
+    background: #524c43;
 }
 
-.tandc-link{
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
+
+.login_link {
+    margin-top: 15px;
+    text-align: center;
     font-size: 14px;
-    margin: 10px 0;
+    color: #666;
+}
+
+.login_link p {
+    margin-bottom: 5px;
+    font-size: 14px;
     color: #333;
 }
 
-.tandc-box input[type="checkbox"] {
-    margin-right: 8px;
-    transform: scale(1.2); /* makes checkbox a bit bigger */
-    cursor: pointer;
-}
-
-.tandc-box a {
-    color: #4a69bd;
-    text-decoration: none;
+.login_link a {
+    color: #537df1;   /* blue color to match theme */
     font-weight: 600;
-}
-
-.tandc-box a:hover {
     text-decoration: underline;
+    transition: 0.3s;
 }
 
-.toggle-box{
-    width: 50%;
-    height: 100%;
-    background: #708ef0;
-    border-radius: 150px 0 0 150px;
-    padding: 30px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: #fff;
-    font-size: 24px;
-    font-weight: 600;
+.login_link a:hover {
+    text-decoration: underline;
+    color: #365edc;  /* darker blue on hover */
 }
 
-.toggle-box-left{
-    position: absolute;
-    width: 50%;
-    height: 100%;
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
 
-.btn-login{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 48px;
-    background: #beceff;
-    border-radius: 15px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border: none;
-    outline: none;
-    cursor: pointer;
-    font-size: 16px;
-    color: #110131;
-    font-weight: 600;
-}
-
-.btn-login:hover{
-    background: #3a73ed;
-}
