@@ -24,8 +24,6 @@ class Config:
     # ===============================================
     # Database configuration (supports multiple databases)
     # ===============================================
-    
-    # Database driver (sqlite, mysql, postgresql)
     DB_CONNECTION = os.getenv('DB_CONNECTION', 'sqlite')
     DB_DATABASE = os.getenv('DB_DATABASE', 'first.db')
     DB_HOST = os.getenv('DB_HOST', 'localhost')
@@ -33,35 +31,41 @@ class Config:
     DB_USERNAME = os.getenv('DB_USERNAME', 'root')
     DB_PASSWORD = os.getenv('DB_PASSWORD', '')
     
-    
     @classmethod
     def get_database_url(cls) -> str:
-        """Generate SQLite database connection URL"""
-        return f'sqlite:///{cls.DB_DATABASE}'
+        """Generate database connection URL"""
+        if cls.DB_CONNECTION == "sqlite":
+            return f"sqlite:///{cls.DB_DATABASE}"
+        elif cls.DB_CONNECTION == "mysql":
+            return f"mysql+pymysql://{cls.DB_USERNAME}:{cls.DB_PASSWORD}@{cls.DB_HOST}:{cls.DB_PORT}/{cls.DB_DATABASE}"
+        elif cls.DB_CONNECTION == "postgresql":
+            return f"postgresql://{cls.DB_USERNAME}:{cls.DB_PASSWORD}@{cls.DB_HOST}:{cls.DB_PORT}/{cls.DB_DATABASE}"
+        else:
+            raise ValueError(f"Unsupported DB_CONNECTION: {cls.DB_CONNECTION}")
     
     # ===============================================
     # Email configuration (SMTP)
     # ===============================================
-    
-    # Email feature switch
     EMAIL_NOTIFICATIONS_ENABLED = os.getenv('EMAIL_NOTIFICATIONS_ENABLED', 'True').lower() == 'true'
     EMAIL_NOTIFICATIONS_COOLDOWN = int(os.getenv('EMAIL_NOTIFICATIONS_COOLDOWN', 600)) # 600 seconds = 10 minutes
     
-    # SMTP server configuration
     MAIL_MAILER = os.getenv('MAIL_MAILER', 'smtp')
     MAIL_HOST = os.getenv('MAIL_HOST', 'smtp.gmail.com')
     MAIL_PORT = int(os.getenv('MAIL_PORT', 587))
-    MAIL_USERNAME = os.getenv('MAIL_USERNAME', '')
-    MAIL_PASSWORD = os.getenv('MAIL_PASSWORD', '')
+    MAIL_USERNAME = os.getenv('MAIL_USERNAME', 'lostandfoundmmu@gmail.com')
+    MAIL_PASSWORD = os.getenv('MAIL_PASSWORD', 'urpktrgmfooghxme')
     MAIL_ENCRYPTION = os.getenv('MAIL_ENCRYPTION', 'tls')  # tls, ssl, none
-    
-    # Sender information
-    MAIL_FROM_ADDRESS = os.getenv('MAIL_FROM_ADDRESS', MAIL_USERNAME)
+
+    # Force sender to always be lostandfoundmmu@gmail.com
+    MAIL_FROM_ADDRESS = "lostandfoundmmu@gmail.com"
     MAIL_FROM_NAME = os.getenv('MAIL_FROM_NAME', APP_NAME)
     
     @classmethod
     def get_mail_config(cls) -> dict:
         """Get mail configuration dictionary"""
+        if cls.MAIL_ENCRYPTION.lower() not in ["tls", "ssl", "none"]:
+            raise ValueError("MAIL_ENCRYPTION must be 'tls', 'ssl', or 'none'")
+        
         return {
             'host': cls.MAIL_HOST,
             'port': cls.MAIL_PORT,
@@ -79,7 +83,6 @@ class Config:
     FAVICON_PATH = 'static/favicon.ico'
     STYLES_PATH = '/static/styles.css'
     
-    # Static file configuration
     STATIC_DIR = 'static'
     STATIC_URL = '/static'
 
@@ -88,6 +91,7 @@ class Config:
     # ===============================================
     LOG_LEVEL = os.getenv('LOG_LEVEL', 'INFO')
     LOG_FILE = os.getenv('LOG_FILE', 'app.log')
+
 
 # Create config instance
 config = Config()
