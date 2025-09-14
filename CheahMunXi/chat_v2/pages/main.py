@@ -2,7 +2,7 @@
 Main page component
 """
 from typing import Optional
-from nicegui import app, ui
+from nicegui import app, ui # type: ignore
 from config import config
 from services.database import SessionLocal
 from components.sidebar import create_sidebar
@@ -125,20 +125,20 @@ def _validate_chat_partner(db, partner_id: int, current_user_id: int) -> bool:
         
         # Check if partner is not the current user (can't chat with self)
         if partner_id == current_user_id:
-            print(f"❌ Cannot chat with self: {partner_id}")
+            print(f"Cannot chat with self: {partner_id}")
             return False
         
         # Check if partner exists in database
         partner = db.query(User).get(partner_id)
         if not partner:
-            print(f"❌ User not found: {partner_id}")
+            print(f"User not found: {partner_id}")
             return False
         
         return True
         
     except (ValueError, TypeError):
-        print(f"❌ Invalid partner ID format: {partner_id}")
+        print(f"Invalid partner ID format: {partner_id}")
         return False
     except Exception as e:
-        print(f"❌ Error validating partner: {e}")
+        print(f"Error validating partner: {e}")
         return False
