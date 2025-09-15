@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}{{ post.title }}{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='post_detail.css') }}">
+
+<div class="post-detail">
+    <h1>{{ post.title }}</h1>
+    
+    {% if post.image %}
+        <img src="{{ url_for('static', filename='uploads/' + post.image) }}" style="max-width:400px;">
+    {% endif %}
+
+    <p>{{ post.description }}</p>
+    <small>Posted by {{ post.author.username }} on {{ post.date_posted.strftime('%Y-%m-%d') }}</small>
+
+    <hr>
+
+    
