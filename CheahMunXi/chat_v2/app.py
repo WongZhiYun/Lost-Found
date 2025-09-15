@@ -13,7 +13,7 @@ from core.startup_checker import run_startup_checks
 from core.middleware import AuthMiddleware
 from services.database import db_service
 
-"""Setup application routes"""
+#Setup application routes
 def setup_routes():
     # Main page route
     ui.page('/')(main_page)
@@ -26,7 +26,7 @@ def setup_routes():
 
 
 
-"""Main application entry point"""
+#Main application entry point
 def main():
     # Run startup checks
     if not run_startup_checks():

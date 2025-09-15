@@ -37,8 +37,9 @@ def report_post():
             type=status,
             location=location,
             image=filename,
-            author = current_user
-        )
+            author = current_user,
+            is_approved=False
+            )
         db.session.add(new_post)
         db.session.commit()
 
@@ -55,7 +56,7 @@ def feed():
     elif filter_type == 'found':
         posts = Post.query.filter_by(type='found').order_by(Post.date_posted.desc()).all()
     else:
-        posts = Post.query.order_by(Post.date_posted.desc()).all()
+        posts = Post.query.filter_by(is_approved=True).order_by(Post.date_posted.desc()).all()
 
     return render_template("feed.html", posts=posts, filter_type=filter_type)
 
@@ -100,27 +101,3 @@ def edit_profile():
 
     return render_template("edit_profile.html", user=current_user)
 
-@views.route('/post/<int:post_id>', methods=['GET', 'POST'])
-@login_required
-def post_detail(post_id):
-    post = Post.query.get_or_404(post_id)
-
-    if request.method == 'POST':
-        text = request.form.get('comment')
-        if text.strip():
-            new_comment = Comment(text=text, user_id=current_user.id, post_id=post.id)
-            db.session.add(new_comment)
-            db.session.commit()
-            flash("Comment added!", "success")
-        else:
-            flash("Comment cannot be empty", "error")
-        return redirect(url_for('views.post_detail', post_id=post.id))
-
-    comments = Comment.query.filter_by(post_id=post.id).order_by(Comment.date_posted.asc()).all()
-    return render_template('post_detail.html', post=post, comments=comments)
-
-@views.route('/profile/<int:user_id>')
-def public_profile(user_id):
-    user = User.query.get_or_404(user_id)
-    posts = Post.query.filter_by(user_id=user.id, is_approved=True).order_by(Post.date_posted.desc()).all()
-    return render_template('profile.html', user=user, posts=posts)
