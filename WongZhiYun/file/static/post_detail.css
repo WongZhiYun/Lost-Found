@@ -1,0 +1,52 @@
+.post-detail {
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 25px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    display: block;
+}
+
+/* Title */
+.post-detail h1 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 28px;
+    color: #444;
+    text-align: center;
+}
+
+/* Image */
+.post-detail img {
+    display: block;
+    width: 500px;
+    height: 400px;
+    object-fit: cover;
+    margin: 0 auto 20px auto;
+    border-radius: 10px;
+}
+
+/* Description */
+.post-detail p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+/* Meta info */
+.post-detail small {
+    display: block;
+    text-align: center;
+    color: #888;
+    margin-bottom: 25px;
+    font-size: 14px;
+}
+
+/* Divider */
+.post-detail hr {
+    border: none;
+    border-top: 1px solid #eee;
+    margin: 20px 0;
