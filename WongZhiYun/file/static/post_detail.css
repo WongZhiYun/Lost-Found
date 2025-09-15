@@ -68,3 +68,43 @@
     font-size: 15px; 
     word-wrap: break-word;
 } 
+
+.comment-avatar { 
+    width: 48px !important; 
+    height: 48px !important; 
+    border-radius: 100% !important; 
+    object-fit: cover;
+    display: block;
+    margin-right: 20px; 
+} 
+
+.comment-initial { 
+    background: #bbb; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    font-weight: bold; 
+    color: white; 
+} 
+
+.comment-body { 
+    display: flex;
+    flex-direction: column;
+    flex: 1; 
+} 
+
+.comment-username { 
+    font-weight: bold; 
+    color: #333; 
+    text-decoration: none; 
+    margin-bottom: 6px;
+} 
+
+.comment-text { 
+    margin-bottom: 4px 0; 
+}
+    
+.comment-date { 
+    font-size: 12px; 
+    color: #777; 
+} 
