@@ -59,9 +59,6 @@ def _create_sidebar_header(db, current_user_id: int):
             # More menu
             with ui.button(icon='more_vert').props('flat round dense').classes('text-gray-600'):
                 with ui.menu():
-                    ui.menu_item('Profile', lambda: None)
-                    ui.menu_item('Settings', lambda: None)
-                    ui.separator()
                     ui.menu_item('Logout', handle_logout)
 
 
