@@ -16,7 +16,20 @@
     <hr>
 
     <h3>Comments</h3>
-
+    {% for c in comments %}
+    <div class="comment">
+        <div class="comment-avatar-wrapper">
+            {% if c.user.profile_image %}
+                <img class="comment-avatar"
+                     src="{{ url_for('static', filename='profile_pics/' + c.user.profile_image) }}"
+                     alt="{{ c.user.username }}'s avatar">
+            {% else %}
+                <div class="comment-avatar comment-initial">
+                    {{ c.user.username[0]|upper }}
+                </div>
+            {% endif %}
+        </div>
+        
         <div class="comment-body">
             <a href="{{ url_for('views.public_profile', user_id=c.user.id) }}"
                class="comment-username">{{ c.user.username }}</a>
