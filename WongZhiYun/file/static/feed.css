@@ -23,12 +23,25 @@ body h1 {
   box-shadow: 0 1px 4px rgba(0,0,0,0.1);
 }
 
-/* Left: menu icon */
-.navbar i.fa-home {
+.nav-left,
+.nav-right {
+    display: flex;
+    align-items: center;
+}
+
+.nav-middle{
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+/* Left: home icon */
+.nav-left i.fa-home {
   font-size: 20px;
   cursor: pointer;
   color: #efe7da;
 }
+
 
 /* Middle: search bar */
 .search {
@@ -58,12 +71,13 @@ body h1 {
   color: #555;
 }
 
-.navbar i.fa-comments{
+/* user and chat i */
+.nav-right i{
   font-size: 20px;
   cursor: pointer;
   color: #efe7da;
+  margin-left: 20px;
 }
-
 
 
 /* Right: user icon */
