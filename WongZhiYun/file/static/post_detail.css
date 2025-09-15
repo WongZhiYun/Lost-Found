@@ -51,3 +51,20 @@
     border-top: 1px solid #eee;
     margin: 20px 0;
 }
+
+/* Comments section */
+.post-detail h3 {
+    margin-top: 0;
+    font-size: 20px;
+    color: #444;
+    margin-bottom: 15px;
+}
+
+.comment {
+    display: flex;
+    align-items: flex-start;
+    padding: 12px 0; 
+    border-bottom: 1px solid #f0f0f0; 
+    font-size: 15px; 
+    word-wrap: break-word;
+} 
