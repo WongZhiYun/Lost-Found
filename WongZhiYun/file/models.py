@@ -22,3 +22,16 @@ class Post(db.Model):
     date_posted = db.Column(db.DateTime, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
     is_approved = db.Column(db.Boolean, default=False)
+
+class Comment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    text = db.Column(db.Text, nullable=False)
+    date_posted = db.Column(db.DateTime, default=datetime.utcnow)
+
+    # relationships
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
+
+    # quick access
+    user = db.relationship('User', backref='comments', lazy=True)
+    post = db.relationship('Post', backref='comments', lazy=True)
