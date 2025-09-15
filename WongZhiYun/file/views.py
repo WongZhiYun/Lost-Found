@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, current_app, flash
 from flask_login import login_required, current_user
-from .models import Post, db
+from .models import Post, db,Comment, User
 from werkzeug.utils import secure_filename
 import os
 
@@ -100,46 +100,4 @@ def edit_profile():
         return redirect(url_for('views.profile'))
 
     return render_template("edit_profile.html", user=current_user)
-
-
-@views.route('/admin/dashboard')
-@login_required
-def admin_dashboard():
-    if current_user.role != "admin":
-        flash("Unauthorized access", "danger")
-        return redirect(url_for('views.home'))
-
-    pending_posts = Post.query.filter_by(is_approved=False).order_by(Post.date_posted.desc()).all()
-    approved_posts = Post.query.filter_by(is_approved=True).order_by(Post.date_posted.desc()).all()
-    return render_template("admin.html",
-                           pending_posts=pending_posts,
-                           approved_posts=approved_posts)
-
-
-@views.route('/admin/approve_post/<int:post_id>', methods=['POST'])
-@login_required
-def approve_post(post_id):
-    if current_user.role != "admin":
-        flash("Unauthorized action", "danger")
-        return redirect(url_for('views.home'))
-
-    post = Post.query.get_or_404(post_id)
-    post.is_approved = True
-    db.session.commit()
-    flash("Post approved successfully!", "success")
-    return redirect(url_for('views.admin_dashboard'))
-
-@views.route('/admin/delete_post/<int:post_id>', methods=['POST'])
-@login_required
-def delete_post(post_id):
-    if current_user.role != "admin":
-        flash("Unauthorized action", "danger")
-        return redirect(url_for('views.home'))
-
-    post = Post.query.get_or_404(post_id)
-    db.session.delete(post)
-    db.session.commit()
-    flash("Post deleted successfully!", "success")
-    return redirect(url_for('views.admin_dashboard'))
-
 

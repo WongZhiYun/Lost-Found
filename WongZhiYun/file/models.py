@@ -21,4 +21,3 @@ class Post(db.Model):
     image = db.Column(db.String(100))  # filename if uploaded
     date_posted = db.Column(db.DateTime, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
-    is_approved = db.Column(db.Boolean, default=False)
