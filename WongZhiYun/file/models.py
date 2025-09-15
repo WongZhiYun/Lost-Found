@@ -21,3 +21,16 @@ class Post(db.Model):
     image = db.Column(db.String(100))  # filename if uploaded
     date_posted = db.Column(db.DateTime, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
+
+class Comment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    text = db.Column(db.Text, nullable=False)
+    date_posted = db.Column(db.DateTime, default=datetime.utcnow)
+
+    # relationships
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
+
+    # quick access
+    user = db.relationship('User', backref='comments', lazy=True)
+    post = db.relationship('Post', backref='comments', lazy=True)
