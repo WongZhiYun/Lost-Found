@@ -2,18 +2,20 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from werkzeug.security import generate_password_hash
+from flask_migrate import Migrate   # <--- ADD THIS
 
 db = SQLAlchemy()
+migrate = Migrate()  # <--- initialize migrate (no app yet)
 
 def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'hello'
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
     db.init_app(app)
+    migrate.init_app(app, db)   # <--- bind migrate to app + db here
 
     from .views import views
     from .auth import auth
-
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
 
@@ -35,7 +37,6 @@ def create_app():
             )
             db.session.add(admin)
             db.session.commit()
-
 
     login_manager = LoginManager()
     login_manager.login_view = "auth.login"

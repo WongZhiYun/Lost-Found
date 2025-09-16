@@ -18,7 +18,7 @@ def login():
             flash("Login successful!", category="success")
 
             if user.role == "admin":
-                return redirect(url_for('views.home'))
+                return redirect(url_for('views.admin_dashboard'))
             else:
                 return redirect(url_for('views.home'))
         else:
