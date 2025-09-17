@@ -18,6 +18,7 @@ class Post(db.Model):
     description = db.Column(db.Text, nullable=False)
     type = db.Column(db.String(10), nullable=False)  # "lost" or "found"
     location = db.Column(db.String(50), nullable=True) # optional
+    category = db.Column(db.String(50), nullable=True)  # optional
     image = db.Column(db.String(100))  # filename if uploaded
     date_posted = db.Column(db.DateTime, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)

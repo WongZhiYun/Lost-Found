@@ -2,23 +2,27 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from werkzeug.security import generate_password_hash
-from flask_migrate import Migrate   # <--- ADD THIS
+from flask_migrate import Migrate
 
 db = SQLAlchemy()
-migrate = Migrate()  # <--- initialize migrate (no app yet)
+migrate = Migrate()  # initialize migrate (no app yet)
 
 def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'hello'
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
-    db.init_app(app)
-    migrate.init_app(app, db)   # <--- bind migrate to app + db here
 
+    # Initialize extensions
+    db.init_app(app)
+    migrate.init_app(app, db)   # bind migrate to app + db
+
+    # Register blueprints
     from .views import views
     from .auth import auth
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
 
+    # Import models so Flask-Migrate can detect them
     from .models import User
     with app.app_context():
         db.create_all()
@@ -30,14 +34,15 @@ def create_app():
         admin = User.query.filter_by(email=admin_email).first()
         if not admin:
             admin = User(
-                email = admin_email,
-                username = "Admin",
-                password = generate_password_hash(admin_password, method="pbkdf2:sha256"),
-                role = "admin"
+                email=admin_email,
+                username="Admin",
+                password=generate_password_hash(admin_password, method="pbkdf2:sha256"),
+                role="admin"
             )
             db.session.add(admin)
             db.session.commit()
 
+    # Setup login manager
     login_manager = LoginManager()
     login_manager.login_view = "auth.login"
     login_manager.init_app(app)
@@ -45,5 +50,5 @@ def create_app():
     @login_manager.user_loader
     def load_user(user_id):
         return User.query.get(int(user_id))
-    
+
     return app
