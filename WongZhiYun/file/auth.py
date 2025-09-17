@@ -47,7 +47,7 @@ def sign_up():
             flash("Password field is empty!", category="error")
             return redirect(url_for("auth.sign_up"))
 
-        if User.query.filter_by(email=email).first()
+        if User.query.filter_by(email=email).first():
             flash("Email already exists", category='error')
             return redirect(url_for('auth.sign_up'))
         
