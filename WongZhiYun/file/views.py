@@ -111,9 +111,24 @@ def admin_dashboard():
 
     pending_posts = Post.query.filter_by(is_approved=False).order_by(Post.date_posted.desc()).all()
     approved_posts = Post.query.filter_by(is_approved=True).order_by(Post.date_posted.desc()).all()
-    return render_template("admin.html",
-                           pending_posts=pending_posts,
-                           approved_posts=approved_posts)
+
+    # Count Lost vs Found
+    lost_count = Post.query.filter_by(type="Lost").count()
+    found_count = Post.query.filter_by(type="Found").count()
+
+    # Count numbers for chart
+    pending_count = len(pending_posts)
+    approved_count = len(approved_posts)
+
+    return render_template(
+        "admin.html",
+        pending_posts=pending_posts,
+        approved_posts=approved_posts,
+        pending_count=pending_count,
+        approved_count=approved_count,  # <-- fixed comma here
+        lost_count=lost_count,
+        found_count=found_count
+    )
 
 
 @views.route('/admin/approve_post/<int:post_id>', methods=['POST'])

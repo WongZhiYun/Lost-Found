@@ -1,101 +1,88 @@
-/* General body styling */
+/* General Layout */
 body {
-  background-color: #f4f1e8;
-  margin: 0;
-  padding: 0;
-  color: #000000;
-  font-family: Arial, sans-serif;
+  background-color: #f8f9fa;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
 }
 
+/* Dashboard Title */
 h1 {
-  text-align: center;
-  margin: 30px 0;
-  padding: 20px;
-  color: #1e1919;
-  font-weight: bold;
+  margin-bottom: 25px;
+  font-weight: 600;
+  color: #444;
 }
 
-/* Card containers */
-.card {
-  border: none;
+/* Chart Row */
+.charts-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+/* Chart Cards */
+.chart-card {
+  flex: 1;
+  min-width: 280px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  margin-bottom: 20px;
   overflow: hidden;
 }
 
+/* Card Headers */
 .card-header {
-  font-weight: bold;
-  font-size: 18px;
-  padding: 12px 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-.card-header.bg-warning {
-  background: #cbb682 !important;
-  color: #1e1919 !important;
+/* Pending & Approved Cards */
+.bg-warning {
+  background-color: #cbb682 !important; /* softer gold */
+  color: #333 !important;
 }
 
-.card-header.bg-success {
-  background: #6f8f64 !important;
-  color: #1e1919 !important;
+.bg-success {
+  background-color: #6f8f64 !important; /* muted green */
 }
 
-.card-body {
-  padding: 16px;
+.bg-info {
+  background-color: #918674 !important; /* earthy tone */
+  color: #fff !important;
 }
 
-/* Post items */
-.list-group-item {
-  background: #fff;
-  border-radius: 10px;
-  padding: 15px;
-  border: 1px solid #eee;
-  transition: 0.3s;
-}
-
-.list-group-item:hover {
-  background: #faf3e7;
-  transform: translateY(-2px);
-}
-
-.list-group-item h5 {
-  color: #1e1919;
-  margin-bottom: 8px;
-  font-weight: bold;
-}
-
-.list-group-item small {
-  color: #1e1919;
+.bg-secondary {
+  background-color: #555 !important; /* neutral grey */
 }
 
 /* Buttons */
-.btn {
-  border-radius: 20px;
-  padding: 5px 14px;
-  font-size: 14px;
-  transition: all 0.3s ease;
-}
-
 .btn-success {
-  background: #4caf50;
+  background-color: #6f8f64;
   border: none;
 }
 
 .btn-success:hover {
-  background: #3e9141;
+  background-color: #5a7552;
 }
 
 .btn-danger {
-  background: #73271f;
+  background-color: #b14c4c;
   border: none;
 }
 
 .btn-danger:hover {
-  background: #c0392b;
+  background-color: #913c3c;
 }
 
-/* Empty message */
-.text-muted {
-  color: #7d6f63 !important;
-  font-style: italic;
+/* Post List */
+.list-group-item {
+  border: 1px solid #e1e1e1;
+  border-radius: 8px;
+  padding: 15px;
+  background-color: #fff;
+  transition: transform 0.2s ease;
+}
+
+.list-group-item:hover {
+  transform: scale(1.01);
+  background-color: #fdfdfd;
 }

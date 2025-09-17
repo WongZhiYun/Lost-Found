@@ -17,8 +17,25 @@
 
 <div class="container py-4">
   <h1>Admin Dashboard</h1>
-  <!-- rest of your page -->
-</div>
+
+  <!-- Charts Row -->
+  <div class="charts-row my-4">
+    <!-- Posts Overview Chart -->
+    <div class="card chart-card">
+      <div class="card-header bg-secondary text-white">Posts Overview</div>
+      <div class="card-body">
+        <canvas id="postsChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Lost vs Found Chart -->
+    <div class="card chart-card">
+      <div class="card-header bg-info text-white">Lost vs Found</div>
+      <div class="card-body">
+        <canvas id="typeChart"></canvas>
+      </div>
+    </div>
+  </div>
 
   <!-- Pending Posts -->
   <div class="card shadow-sm mb-4">
@@ -30,7 +47,9 @@
             <div>
               <h5>{{ post.title }}</h5>
               <p>{{ post.description[:100] }}{% if post.description|length > 100 %}...{% endif %}</p>
-              <small><strong>Type:</strong> {{ post.type }} | <strong>Location:</strong> {{ post.category }} | <strong>Author:</strong> {{ post.author.username }}</small>
+              <small><strong>Type:</strong> {{ post.type }} | 
+                     <strong>Location:</strong> {{ post.category }} | 
+                     <strong>Author:</strong> {{ post.author.username }}</small>
             </div>
             <div>
               <form action="{{ url_for('views.approve_post', post_id=post.id) }}" method="POST" style="display:inline;">
@@ -58,7 +77,9 @@
             <div>
               <h5>{{ post.title }}</h5>
               <p>{{ post.description[:100] }}{% if post.description|length > 100 %}...{% endif %}</p>
-              <small><strong>Type:</strong> {{ post.type }} | <strong>Location:</strong> {{ post.category }} | <strong>Author:</strong> {{ post.author.username }}</small>
+              <small><strong>Type:</strong> {{ post.type }} | 
+                     <strong>Location:</strong> {{ post.category }} | 
+                     <strong>Author:</strong> {{ post.author.username }}</small>
             </div>
             <div>
               <form action="{{ url_for('views.delete_post', post_id=post.id) }}" method="POST" style="display:inline;">
@@ -73,6 +94,53 @@
     </div>
   </div>
 </div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  // Pie chart - Approved vs Pending
+  const postsCtx = document.getElementById('postsChart').getContext('2d');
+  new Chart(postsCtx, {
+    type: 'pie',
+    data: {
+      labels: ['Approved', 'Pending'],
+      datasets: [{
+        data: [{{ approved_posts|length }}, {{ pending_posts|length }}],
+        backgroundColor: ['#6f8f64', '#cbb682'], // theme colors
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: 'bottom' }
+      }
+    }
+  });
+
+  // Bar chart - Lost vs Found
+  const typeCtx = document.getElementById('typeChart').getContext('2d');
+  new Chart(typeCtx, {
+    type: 'bar',
+    data: {
+      labels: ['Lost', 'Found'],
+      datasets: [{
+        label: 'Number of Posts',
+        data: [{{ lost_count }}, {{ found_count }}],
+        backgroundColor: ['#918674', '#6f8f64'] // theme colors
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false }
+      },
+      scales: {
+        y: { beginAtZero: true }
+      }
+    }
+  });
+</script>
 
 </body>
 </html>
