@@ -35,7 +35,7 @@ def report_post():
             title=title,
             description=description,
             type=status,
-            location=location,
+            category=location,
             image=filename,
             author = current_user,
             is_approved=False
