@@ -35,7 +35,7 @@ def report_post():
             title=title,
             description=description,
             type=status,
-            category=location,
+            location=location,
             image=filename,
             author = current_user,
             is_approved=False
@@ -141,5 +141,3 @@ def delete_post(post_id):
     db.session.commit()
     flash("Post deleted successfully!", "success")
     return redirect(url_for('views.admin_dashboard'))
-
-

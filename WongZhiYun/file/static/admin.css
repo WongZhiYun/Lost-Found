@@ -3,7 +3,7 @@ body {
   background-color: #f4f1e8;
   margin: 0;
   padding: 0;
-  color: #333;
+  color: #000000;
   font-family: Arial, sans-serif;
 }
 
@@ -11,7 +11,7 @@ h1 {
   text-align: center;
   margin: 30px 0;
   padding: 20px;
-  color: #6f4501;
+  color: #1e1919;
   font-weight: bold;
 }
 
@@ -31,13 +31,13 @@ h1 {
 }
 
 .card-header.bg-warning {
-  background: #f7d488 !important;
-  color: #5a3b00 !important;
+  background: #cbb682 !important;
+  color: #1e1919 !important;
 }
 
 .card-header.bg-success {
-  background: #6abf69 !important;
-  color: #fff !important;
+  background: #6f8f64 !important;
+  color: #1e1919 !important;
 }
 
 .card-body {
@@ -59,13 +59,13 @@ h1 {
 }
 
 .list-group-item h5 {
-  color: #7b4a02;
+  color: #1e1919;
   margin-bottom: 8px;
   font-weight: bold;
 }
 
 .list-group-item small {
-  color: #555;
+  color: #1e1919;
 }
 
 /* Buttons */
@@ -86,7 +86,7 @@ h1 {
 }
 
 .btn-danger {
-  background: #e74c3c;
+  background: #73271f;
   border: none;
 }
 
