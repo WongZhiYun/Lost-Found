@@ -11,21 +11,40 @@
 
     <body>
         <nav class="navbar">
-    
-            <!-- Left: Menu Button -->
-            <a href="{{ url_for('views.home') }}">
-                <i class="fa-solid fa-home"></i>
-            </a>
-    
-            <!-- Middle: Search Bar -->
-            <form class="search">
-                <input class="search-input" type="search" placeholder="Search">
-                <i class="fa-solid fa-magnifying-glass"></i>
-            </form>
-    
-            <!-- Right: User Button -->
-            <i class= "fa-solid fa-user" onclick="toggleMenu()"></i>
 
+            <div class="nav-left">
+                <!-- Left: Menu Button -->
+                <a href="{{ url_for('views.home') }}">
+                    <i class="fa-solid fa-home"></i>
+                </a>
+            </div>
+
+            <div class="nav-middle">
+                <!-- Middle: Search Bar -->
+                <form class="search">
+                    <input class="search-input" type="search" placeholder="Search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </form>
+            </div>
+
+            <div class="nav-right">
+                <div id="chatButton">
+                    <i class="fa-solid fa-comments"></i>
+                </div>
+
+                <!--chat window-->
+                <div id="chatWindow">
+                    <div id="chatHeader">
+                        <span>Live Chat</span>
+                        <button id="closeChat">✖</button>
+                    </div>
+                    <iframe id="chatFrame" src=""></iframe>
+                </div>
+                
+                <!-- Right: User Button -->
+                <i class= "fa-solid fa-user" onclick="toggleMenu()"></i>
+            </div>
+            
             <div class="acc-wrap" id="accMenu">
                 <div class="acc">
                     <div class="acc-menu">
@@ -44,6 +63,7 @@
                         <p>Edit Profile</p>
                     </a>
                     <a href="{{ url_for('views.my_posts') }}" class="acc-menu-link">
+                        <i class="fa-solid fa-pen"></i>
                         <p>My Posts</p>
                     </a>
                     <a href="{{ url_for('auth.logout') }}" class="acc-menu-link">
@@ -98,4 +118,19 @@
     function toggleMenu(){
         accMenu.classList.toggle("open-menu");
     }
+
+    const chatBtn = document.getElementById("chatButton");
+    const chatWindow = document.getElementById("chatWindow");
+    const chatFrame = document.getElementById("chatFrame");
+    const closeBtn = document.getElementById("closeChat");
+
+    chatBtn.onclick = () => {
+      chatFrame.src = "http://localhost:8080"; //chat app
+      chatWindow.style.display = "flex";
+    };
+
+    closeBtn.onclick = () => {
+      chatFrame.src = ""; // unload
+      chatWindow.style.display = "none";
+    };
 </script>

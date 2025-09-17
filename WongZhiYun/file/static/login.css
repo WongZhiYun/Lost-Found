@@ -73,7 +73,7 @@ form{
 }
 
 .form-box{
-    width: 50%;
+    width: 100%;
     height: 100%;
     background: #f5f5eb;
     display: flex;
@@ -137,6 +137,19 @@ form{
     font-size: 20px;
 }
 
+.input-box i.fa-lock {
+    right: 20px;
+}
+
+.input-box i.fa-eye,
+.input-box i.fa-eye-slash {
+    right: 50px;     /* Eye stays on the right */
+    left: auto;
+    width: 24px;     /* Keep width fixed to stop shifting */
+    text-align: center;
+}
+
+
 .forgot-link{
     margin: -15px 0 15px;
     display: flex;
@@ -145,7 +158,7 @@ form{
 
 .forgot-link a{
     font-size: 14.5px;
-    color: #4177eb;
+    color: #797164;
     text-decoration: underline;
     cursor: pointer;
 }

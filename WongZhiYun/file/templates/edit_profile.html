@@ -1,6 +1,11 @@
 <title>Edit Profile</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}">
 {% block content %}
+<!-- Back button -->
+<a href="{{ url_for('views.profile') }}" class="back-link">
+    <i class='bx bx-chevrons-left'></i> Back
+</a>
+
 <div class="profile-container">
     <h2>Edit Profile</h2>
 
