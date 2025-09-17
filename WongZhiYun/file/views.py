@@ -35,7 +35,7 @@ def report_post():
             title=title,
             description=description,
             type=status,
-            location=location,
+            category=location,
             image=filename,
             author = current_user,
             is_approved=False
@@ -52,13 +52,14 @@ def feed():
     filter_type = request.args.get('type', 'all')
     
     if filter_type == 'lost':
-        posts = Post.query.filter_by(type='lost').order_by(Post.date_posted.desc()).all()
+        posts = Post.query.filter_by(type='lost',is_approved=True).order_by(Post.date_posted.desc()).all()
     elif filter_type == 'found':
-        posts = Post.query.filter_by(type='found').order_by(Post.date_posted.desc()).all()
+        posts = Post.query.filter_by(type='found',is_approved=True).order_by(Post.date_posted.desc()).all()
     else:
         posts = Post.query.filter_by(is_approved=True).order_by(Post.date_posted.desc()).all()
 
     return render_template("feed.html", posts=posts, filter_type=filter_type)
+
 
 @views.route('/my_posts')
 @login_required

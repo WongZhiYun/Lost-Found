@@ -1,15 +1,29 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask_mail import Mail
+from flask_migrate import Migrate
 from werkzeug.security import generate_password_hash
 
+mail = Mail()
 db = SQLAlchemy()
+migrate = Migrate()
 
 def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'hello'
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+    
+    #-- Mail configuration for admin email ---
+    app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+    app.config['MAIL_PORT'] = 587
+    app.config['MAIL_USE_TLS'] = True
+    app.config['MAIL_USERNAME'] = "lostandfoundmmu@gmail.com"  # admin email
+    app.config['MAIL_PASSWORD'] = "urpk trgm foog hxme"     # app password
+    mail.init_app(app)
+
     db.init_app(app)
+    migrate.init_app(app, db)
 
     from .views import views
     from .auth import auth
