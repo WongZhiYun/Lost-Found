@@ -66,16 +66,30 @@ def sign_up():
 
     return render_template("sign_up.html")
 
+
+@auth.route('/verify_otp', methods=['POST'])
+def verify_otp():
+    input_otp = request.form.get('otp')
+
+    if input_otp == session.get('otp'):
+        # --- Now we create the user in the database ---
         new_user = User(
-            email=email,
-            username=username,
-            password = generate_password_hash(password, method='pbkdf2:sha256')
+            email=session.get('reg_email'),
+            username=session.get('reg_username'),
+            password=session.get('reg_password')
         )
         db.session.add(new_user)
         db.session.commit()
 
-        flash("Account created!", category='success')
+        # Clear temporary session data
+        session.pop('otp', None)
+        session.pop('reg_email', None)
+        session.pop('reg_username', None)
+        session.pop('reg_password', None)
+
+        flash("Account created successfully!", category='success')
         return redirect(url_for('auth.login'))
 
-    return render_template("sign_up.html")
-
+    else:
+        flash("Invalid OTP. Try again.", category='error')
+        return redirect(url_for('auth.sign_up'))
