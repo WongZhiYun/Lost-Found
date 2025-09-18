@@ -18,17 +18,30 @@ body h1 {
   display: flex;
   justify-content: space-between; /* left - middle - right */
   align-items: center;
-  background-color: #d4baa3;
-  padding: 18px 16px;
+  background-color: #918674;
+  padding: 18px 30px;
   box-shadow: 0 1px 4px rgba(0,0,0,0.1);
 }
 
-/* Left: menu icon */
-.navbar i.fa-home {
+.nav-left,
+.nav-right {
+    display: flex;
+    align-items: center;
+}
+
+.nav-middle{
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+/* Left: home icon */
+.nav-left i.fa-home {
   font-size: 20px;
   cursor: pointer;
-  color: #7b5c4b;
+  color: #efe7da;
 }
+
 
 /* Middle: search bar */
 .search {
@@ -58,11 +71,64 @@ body h1 {
   color: #555;
 }
 
+/* user and chat i */
+.nav-right i{
+  font-size: 20px;
+  cursor: pointer;
+  color: #efe7da;
+  margin-left: 20px;
+}
+
+
 /* Right: user icon */
-.navbar i.fa-user {
+#chatButton {
   font-size: 22px;
   cursor: pointer;
-  color: #945303;
+  color: #efe7da;
+}
+
+/* Chat window (hidden by default) */
+#chatWindow {
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+  width: 350px;
+  height: 500px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  display: none;
+  flex-direction: column;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  overflow: hidden;
+  background: white;
+}
+
+/* Chat header */
+#chatHeader {
+  background: #0078ff;
+  color: white;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#chatHeader button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#chatHeader button:hover {
+  color: #ffdddd;
+}
+
+/* iFrame (fills chat window) */
+#chatFrame {
+  flex: 1;
+  border: none;
 }
 
 .acc-wrap{
@@ -153,7 +219,7 @@ body h1 {
     padding: 10px 24px;
     text-decoration: none;
     color: #ab6f10;
-    border: 2px solid #6f4501;
+    border: 2px solid #b3907a;
     border-radius: 25px;
     font-weight: 500;
     transition: all 0.3s ease;
@@ -162,17 +228,17 @@ body h1 {
 
 /* Hover effect */
 .filter-bar a:hover {
-    background: #8f5902;
+    background: #b3907a;
     color: #fff;
 }
 
 /* Active effect */
 .filter-bar a.active {
-    background: linear-gradient(135deg, #a46601, rgb(121, 75, 1));
+    background: #b58d75;
     color: #fff;
-    border-color: #695303;
+    border-color: #7b5c4b;
     font-weight: bold;
-    box-shadow: 0 4px 12px rgba(76,175,80,0.3);
+    box-shadow: 0 4px 12px #b3907a;
     transform: scale(1.05);
 }
 
@@ -231,7 +297,7 @@ body h1 {
 }
 
 .submit-btn {
-    background: #294ba1;
+    background: #918674;
     color: #fff;
     padding: 10px 0;
     border: none;
@@ -242,7 +308,7 @@ body h1 {
 }
 
 .submit-btn:hover {
-    background: #1e3a8a;
+    background: #7b5c4b;
 }
 
 .card-container {
