@@ -31,13 +31,38 @@
                         </label>
                     </div>
                     <button type="submit" class="btn">Register</button>
+                    <div class="login_link">
+                        <p>Already have an account?</p>
+                        <a href="{{ url_for('auth.login') }}" >Login</a>
+                    </div>
                 </form>
             </div>
-            <div class="toggle-box">
-                <h1>Hello, Welcome!</h1>
-                <p>Already have an account?</p>
-                <a href="{{ url_for('auth.login') }}" class="btn-login">Login</a>
+        </div>
+
+        {% if show_otp %}
+        <div id="otpPopup" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);display:flex;justify-content:center;align-items:center;z-index:9999;">
+            <div style="width:350px; background:white; border-radius:10px; position:relative; padding:40px 20px 20px 20px;">
+                <!-- Close button -->
+                <button onclick="closeOtpPopup()" style="position:absolute; top:10px; right:10px; background:none; border:none; font-size:20px; cursor:pointer;">&times;</button>
+                <div>
+                    <h1 style="margin-top: 0;">Verify OTP</h1>
+                    <p>Enter the OTP sent to {{ session['reg_email'] }}</p>
+                    <form method="POST" action="{{ url_for('auth.verify_otp') }}">
+                        <div class="input-box">
+                            <input type="text" name="otp" placeholder="Enter OTP" required>
+                            <i class="fa-solid fa-key"></i>
+                        </div>
+                        <button type="submit" class="btn">Verify</button>
+                    </form>
+                </div>
             </div>
         </div>
+        <script>
+        function closeOtpPopup() {
+            document.getElementById('otpPopup').style.display = 'none';
+            }
+        </script>
+        {% endif %}
+
     </body>
 </html>

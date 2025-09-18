@@ -1,8 +1,10 @@
 from flask import Blueprint, render_template, request, redirect, url_for, current_app, flash
 from flask_login import login_required, current_user
-from .models import Post, db
+from .models import Post, db, Comment, User
 from werkzeug.utils import secure_filename
 import os
+from sqlalchemy import func
+
 
 views = Blueprint('views', __name__)
 
@@ -35,10 +37,11 @@ def report_post():
             title=title,
             description=description,
             type=status,
-            category=location,
+            location=location,
             image=filename,
-            author = current_user
-        )
+            author = current_user,
+            is_approved=False
+            )
         db.session.add(new_post)
         db.session.commit()
 
@@ -51,13 +54,14 @@ def feed():
     filter_type = request.args.get('type', 'all')
     
     if filter_type == 'lost':
-        posts = Post.query.filter_by(type='lost').order_by(Post.date_posted.desc()).all()
+        posts = Post.query.filter_by(type='lost',is_approved=True).order_by(Post.date_posted.desc()).all()
     elif filter_type == 'found':
-        posts = Post.query.filter_by(type='found').order_by(Post.date_posted.desc()).all()
+        posts = Post.query.filter_by(type='found',is_approved=True).order_by(Post.date_posted.desc()).all()
     else:
-        posts = Post.query.order_by(Post.date_posted.desc()).all()
+        posts = Post.query.filter_by(is_approved=True).order_by(Post.date_posted.desc()).all()
 
     return render_template("feed.html", posts=posts, filter_type=filter_type)
+
 
 @views.route('/my_posts')
 @login_required
@@ -100,4 +104,85 @@ def edit_profile():
 
     return render_template("edit_profile.html", user=current_user)
 
+@views.route('/post/<int:post_id>', methods=['GET', 'POST'])
+@login_required
+def post_detail(post_id):
+    post = Post.query.get_or_404(post_id)
 
+    if request.method == 'POST':
+        text = request.form.get('comment')
+        if text.strip():
+            new_comment = Comment(text=text, user_id=current_user.id, post_id=post.id)
+            db.session.add(new_comment)
+            db.session.commit()
+            flash("Comment added!", "success")
+        else:
+            flash("Comment cannot be empty", "error")
+        return redirect(url_for('views.post_detail', post_id=post.id))
+
+    comments = Comment.query.filter_by(post_id=post.id).order_by(Comment.date_posted.asc()).all()
+    return render_template('post_detail.html', post=post, comments=comments)
+
+@views.route('/profile/<int:user_id>')
+def public_profile(user_id):
+    user = User.query.get_or_404(user_id)
+    posts = Post.query.filter_by(user_id=user.id, is_approved=True).order_by(Post.date_posted.desc()).all()
+    return render_template('profile.html', user=user, posts=posts)
+
+
+@views.route('/admin/dashboard')
+@login_required
+def admin_dashboard():
+    if current_user.role != "admin":
+        flash("Unauthorized access", "danger")
+        return redirect(url_for('views.home'))
+
+    # Pending & approved posts
+    pending_posts = Post.query.filter_by(is_approved=False).order_by(Post.date_posted.desc()).all()
+    approved_posts = Post.query.filter_by(is_approved=True).order_by(Post.date_posted.desc()).all()
+
+    # Counts for overview
+    pending_count = len(pending_posts)
+    approved_count = len(approved_posts)
+
+    # Group by type (Lost, Found, etc.)
+    type_counts = (
+        db.session.query(Post.type, func.count(Post.id))
+        .group_by(Post.type)
+        .all()
+    )
+    type_data = {t: c for t, c in type_counts}  # dict: {"Lost": 5, "Found": 7, "Other": 2}
+
+    return render_template(
+        "admin.html",
+        pending_posts=pending_posts,
+        approved_posts=approved_posts,
+        pending_count=pending_count,
+        approved_count=approved_count,
+        type_data=type_data
+    )
+@views.route('/admin/approve_post/<int:post_id>', methods=['POST'])
+@login_required
+def approve_post(post_id):
+    if current_user.role != "admin":
+        flash("Unauthorized action", "danger")
+        return redirect(url_for('views.home'))
+
+    post = Post.query.get_or_404(post_id)
+    post.is_approved = True
+    db.session.commit()
+    flash("Post approved successfully!", "success")
+    return redirect(url_for('views.admin_dashboard'))
+
+@views.route('/admin/delete_post/<int:post_id>', methods=['POST'])
+@login_required
+def delete_post(post_id):
+    if current_user.role != "admin":
+        flash("Unauthorized action", "danger")
+        return redirect(url_for('views.home'))
+
+    post = Post.query.get_or_404(post_id)
+    db.session.delete(post)
+    db.session.commit()
+    flash("Post deleted successfully!", "success")
+    return redirect(url_for('views.admin_dashboard'))

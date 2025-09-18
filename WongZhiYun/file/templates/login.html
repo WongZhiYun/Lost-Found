@@ -40,6 +40,7 @@
                     <div class="input-box">
                         <input type="password" name="password" placeholder="Password" required>
                         <i class="fa-solid fa-lock"></i>
+                        <i class="fa-solid fa-eye" onclick="togglePassword(this)"></i>
                     </div>
                     <div class="forgot-link">
                         <a href="/">Forgot Password?</a>
@@ -64,4 +65,15 @@
       setTimeout(() => flashMessages.remove(), 500); // remove after fade
     }
   }, 2000);
+
+  function togglePassword(icon) {
+    const input = icon.parentElement.querySelector('input');
+    if (input.type === "password") {
+        input.type = "text";
+        icon.classList.replace('fa-eye', 'fa-eye-slash');
+    } else {
+        input.type = "password";
+        icon.classList.replace('fa-eye-slash', 'fa-eye');
+    }
+}
 </script>
