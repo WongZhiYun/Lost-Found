@@ -88,6 +88,7 @@
 
         <div class="card-container">
             {% for post in posts %}
+            <a href="{{ url_for('views.post_detail', post_id=post.id) }}" class="card-link"></a>
             <div class="card">
                 {% if post.image %}
                 <img src="{% if post.image %}{{ url_for('static', filename='uploads/' + post.image) }}
