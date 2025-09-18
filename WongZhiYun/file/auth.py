@@ -1,8 +1,9 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, login_required
 from .models import User
 from . import db
+from .otp import generate_otp, send_otp_email
 
 auth = Blueprint('auth', __name__)
 
@@ -18,7 +19,7 @@ def login():
             flash("Login successful!", category="success")
 
             if user.role == "admin":
-                return redirect(url_for('views.home'))
+                return redirect(url_for('views.admin_dashboard'))
             else:
                 return redirect(url_for('views.home'))
         else:
@@ -46,21 +47,49 @@ def sign_up():
             flash("Password field is empty!", category="error")
             return redirect(url_for("auth.sign_up"))
 
-        existing_user = User.query.filter_by(email=email).first()
-        if existing_user:
+        if User.query.filter_by(email=email).first():
             flash("Email already exists", category='error')
             return redirect(url_for('auth.sign_up'))
         
+        # --- Generate OTP ---
+        otp = generate_otp()
+        session['otp'] = otp
+        session['reg_email'] = email
+        session['reg_username'] = username
+        session['reg_password'] = generate_password_hash(password, method='pbkdf2:sha256')
+
+        # Send OTP from admin email
+        send_otp_email(email, otp)
+
+        # Reload signup page with OTP popup
+        return render_template("sign_up.html", show_otp=True)
+
+    return render_template("sign_up.html")
+
+
+@auth.route('/verify_otp', methods=['POST'])
+def verify_otp():
+    input_otp = request.form.get('otp')
+
+    if input_otp == session.get('otp'):
+        # --- Now we create the user in the database ---
         new_user = User(
-            email=email,
-            username=username,
-            password = generate_password_hash(password, method='pbkdf2:sha256')
+            email=session.get('reg_email'),
+            username=session.get('reg_username'),
+            password=session.get('reg_password')
         )
         db.session.add(new_user)
         db.session.commit()
 
-        flash("Account created!", category='success')
+        # Clear temporary session data
+        session.pop('otp', None)
+        session.pop('reg_email', None)
+        session.pop('reg_username', None)
+        session.pop('reg_password', None)
+
+        flash("Account created successfully!", category='success')
         return redirect(url_for('auth.login'))
 
-    return render_template("sign_up.html")
-
+    else:
+        flash("Invalid OTP. Try again.", category='error')
+        return redirect(url_for('auth.sign_up'))

@@ -3,6 +3,8 @@ from flask_login import login_required, current_user
 from .models import Post, db, Comment, User
 from werkzeug.utils import secure_filename
 import os
+from sqlalchemy import func
+
 
 views = Blueprint('views', __name__)
 
@@ -52,13 +54,14 @@ def feed():
     filter_type = request.args.get('type', 'all')
     
     if filter_type == 'lost':
-        posts = Post.query.filter_by(type='lost').order_by(Post.date_posted.desc()).all()
+        posts = Post.query.filter_by(type='lost',is_approved=True).order_by(Post.date_posted.desc()).all()
     elif filter_type == 'found':
-        posts = Post.query.filter_by(type='found').order_by(Post.date_posted.desc()).all()
+        posts = Post.query.filter_by(type='found',is_approved=True).order_by(Post.date_posted.desc()).all()
     else:
         posts = Post.query.filter_by(is_approved=True).order_by(Post.date_posted.desc()).all()
 
     return render_template("feed.html", posts=posts, filter_type=filter_type)
+
 
 @views.route('/my_posts')
 @login_required
@@ -134,13 +137,30 @@ def admin_dashboard():
         flash("Unauthorized access", "danger")
         return redirect(url_for('views.home'))
 
+    # Pending & approved posts
     pending_posts = Post.query.filter_by(is_approved=False).order_by(Post.date_posted.desc()).all()
     approved_posts = Post.query.filter_by(is_approved=True).order_by(Post.date_posted.desc()).all()
-    return render_template("admin.html",
-                           pending_posts=pending_posts,
-                           approved_posts=approved_posts)
 
+    # Counts for overview
+    pending_count = len(pending_posts)
+    approved_count = len(approved_posts)
 
+    # Group by type (Lost, Found, etc.)
+    type_counts = (
+        db.session.query(Post.type, func.count(Post.id))
+        .group_by(Post.type)
+        .all()
+    )
+    type_data = {t: c for t, c in type_counts}  # dict: {"Lost": 5, "Found": 7, "Other": 2}
+
+    return render_template(
+        "admin.html",
+        pending_posts=pending_posts,
+        approved_posts=approved_posts,
+        pending_count=pending_count,
+        approved_count=approved_count,
+        type_data=type_data
+    )
 @views.route('/admin/approve_post/<int:post_id>', methods=['POST'])
 @login_required
 def approve_post(post_id):
@@ -166,5 +186,3 @@ def delete_post(post_id):
     db.session.commit()
     flash("Post deleted successfully!", "success")
     return redirect(url_for('views.admin_dashboard'))
-
-
