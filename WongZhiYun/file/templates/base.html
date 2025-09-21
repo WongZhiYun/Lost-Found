@@ -20,6 +20,10 @@
                         <li><a href="{{ url_for('views.home') }}">Home</a></li>
                         <li><a href="#about">About Us</a></li>
                         <li><a href="/">Services</a></li>
+                        {% if current_user.is_authenticated %}
+                        <!-- ONLY show if the user is logged in -->
+                        <li><a href="{{ url_for('views.feed') }}">Post Board</a></li>
+                        {% endif %}
                     </ul>
                     <i class='bx bxs-user' onclick="toggleMenu()"></i>
 

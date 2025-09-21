@@ -44,6 +44,20 @@
     color: #666;
 }
 
+.back-link {
+    position: fixed;
+    top: 500px;
+    left: 20px;
+    font-size: 20px;
+    color: #333;
+    text-decoration: none;
+}
+
+.back-link:hover {
+    color: #776e52; /* hover color */
+}
+
+
 /* Action buttons (edit/logout) */
 .profile-actions {
     margin-top: 10px;
@@ -81,12 +95,22 @@
 
 /* Post cards */
 .post-card {
+    max-width: 300px;
     background: #f7faff;
     border-radius: 15px;
     padding: 20px;
-    margin-bottom: 20px;
+    margin: 0 auto 20px;
     box-shadow: 0 3px 10px rgba(0,0,0,0.05);
     transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.post-card img {
+    width: 100%;          /* fills the card width */
+    max-height: 250px;    /* limit the height so it’s not too tall */
+    object-fit: cover;    /* crops while keeping aspect ratio */
+    border-radius: 12px;  /* match the card’s rounded corners */
+    margin-bottom: 12px;  /* space below the image */
+    display: block;       /* removes inline gaps */
 }
 
 .post-card:hover {
@@ -152,12 +176,12 @@
     border: none;
     font-size: 16px;
     font-weight: bold;
-    background: #537df1;
+    background: #918674;
     color: #fff;
     cursor: pointer;
     transition: 0.3s;
 }
 
 .save-btn:hover {
-    background: #365edc;
+    background: #72695c;
 }

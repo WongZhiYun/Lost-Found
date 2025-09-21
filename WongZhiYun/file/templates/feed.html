@@ -88,26 +88,27 @@
 
         <div class="card-container">
             {% for post in posts %}
-            <a href="{{ url_for('views.post_detail', post_id=post.id) }}" class="card-link"></a>
-            <div class="card">
-                {% if post.image %}
-                <img src="{% if post.image %}{{ url_for('static', filename='uploads/' + post.image) }}
-                {% else %}
-                {{ url_for('static', filename='placeholder.png') }}
-                {% endif %}" 
-                alt="Item image">
-                {% endif %}
-                <div class="card-content">
-                    <h3>{{ post.title }}</h3>
-                    <p>{{ post.description }}</p>
-                    <small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
-                    {% if post.type == "lost" %}
-                    <span class="badge lost">Lost</span>
+            <a href="{{ url_for('views.post_detail', post_id=post.id) }}" class="card-link">
+                <div class="card">
+                    {% if post.image %}
+                    <img src="{% if post.image %}{{ url_for('static', filename='uploads/' + post.image) }}
                     {% else %}
-                    <span class="badge found">Found</span>
+                    {{ url_for('static', filename='placeholder.png') }}
+                    {% endif %}" 
+                    alt="Item image">
                     {% endif %}
+                    <div class="card-content">
+                        <h3>{{ post.title }}</h3>
+                        <p>{{ post.description }}</p>
+                        <small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
+                        {% if post.type == "lost" %}
+                        <span class="badge lost">Lost</span>
+                        {% else %}
+                        <span class="badge found">Found</span>
+                        {% endif %}
+                    </div>
                 </div>
-            </div>
+            </a>
             {% endfor %}
         </div>
     </body>

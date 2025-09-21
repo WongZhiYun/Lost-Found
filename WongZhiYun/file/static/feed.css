@@ -342,6 +342,8 @@ body h1 {
     padding: 15px;
 }
 
+.card-link { text-decoration: none; color: inherit; }
+
 .badge {
     padding: 5px 12px;
     border-radius: 20px;
