@@ -80,11 +80,11 @@ class Config:
     # ===============================================
     # UI configuration
     # ===============================================
-    FAVICON_PATH = 'static/favicon.ico'
-    STYLES_PATH = '/static/styles.css'
+    FAVICON_PATH = 'static/favicon.ico' # Browser tab icon
+    STYLES_PATH = '/static/styles.css' # Path to global CSS
     
-    STATIC_DIR = 'static'
-    STATIC_URL = '/static'
+    STATIC_DIR = 'static' # Static assets folder
+    STATIC_URL = '/static' # URL prefix for serving static files
 
     # ===============================================
     # Log configuration
