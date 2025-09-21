@@ -13,6 +13,7 @@ class AuthMiddleware(BaseHTTPMiddleware):
     async def dispatch(
         self, request: Request, call_next: RequestResponseEndpoint
     ) -> Response:
+        # Create a new database session for each request
         db = SessionLocal()
         
         # Define unprotected paths

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name = "viewport" content ="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="{{ url_for('static', filename='signupstyle.css') }}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css">
+    </head>
+
+    <body>
+        <div class="signup-box">
+            <div class="form-box">
+                <form action="#" method="POST">
+                    <h1>Create Account</h1>
+                    <div class="input-box">
+                        <input type="text" name="username" placeholder="Username" required>
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <div class="input-box">
+                        <input type="email" name="email" placeholder="Email" required>
+                        <i class="fa-solid fa-envelope"></i>
+                    </div>
+                    <div class="input-box">
+                        <input type="password" name="password" placeholder="Password" required>
+                        <i class="fa-solid fa-lock"></i>
+                    </div>
+                    <div class="tandc-link">
+                        <label>
+                            <input type="checkbox" name="tandc" required>
+                            I accept the <a href="/" target="_blank">Terms and Condition</a>
+                        </label>
+                    </div>
+                    <button type="submit" class="btn">Register</button>
+                    <div class="login_link">
+                        <p>Already have an account?</p>
+                        <a href="{{ url_for('auth.login') }}" >Login</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        {% if show_otp %}
+        <div id="otpPopup" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);display:flex;justify-content:center;align-items:center;z-index:9999;">
+            <div style="width:350px; background:white; border-radius:10px; position:relative; padding:40px 20px 20px 20px;">
+                <!-- Close button -->
+                <button onclick="closeOtpPopup()" style="position:absolute; top:10px; right:10px; background:none; border:none; font-size:20px; cursor:pointer;">&times;</button>
+                <div>
+                    <h1 style="margin-top: 0;">Verify OTP</h1>
+                    <p>Enter the OTP sent to {{ session['reg_email'] }}</p>
+                    <form method="POST" action="{{ url_for('auth.verify_otp') }}">
+                        <div class="input-box">
+                            <input type="text" name="otp" placeholder="Enter OTP" required>
+                            <i class="fa-solid fa-key"></i>
+                        </div>
+                        <button type="submit" class="btn">Verify</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <script>
+        function closeOtpPopup() {
+            document.getElementById('otpPopup').style.display = 'none';
+            }
+        </script>
+        {% endif %}
+
+    </body>
+</html>

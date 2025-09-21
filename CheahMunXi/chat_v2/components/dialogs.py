@@ -65,14 +65,27 @@ def open_new_chat_dialog():
 
 """Create user item"""
 def _create_user_item(user, dialog):
+    
+    """
+    Create a clickable user item in the dialog.
+    - Shows user avatar and name
+    - Clicking starts a new chat with that user
+    """
+
     def create_chat_handler(u_id):
+        """Return handler that closes dialog and navigates to chat with selected user"""
         def start_chat():
+            # Close the "new chat" dialog
             dialog.close()
+            # Navigate to the main page with query param for selected user
             ui.navigate.to(f'/?chat_with={u_id}')
         return start_chat
     
-    with ui.element('div').classes('custom-dialog-user-item').on('click', create_chat_handler(user.id)):
+    # Create a clickable user item inside the dialog
+    with ui.element('div').classes('custom-dialog-user-item').on('click', create_chat_handler(user.id)): # Attach handler for starting chat
+         # User avatar (generated using robohash)
         ui.image(f'https://robohash.org/{user.username}.png').classes('w-10 h-10 rounded-full object-cover mr-2 bg-gray-300')
+        # User info (username + subtitle)
         with ui.element('div').classes('flex-1'):
             ui.label(str(user.username)).classes('font-medium text-gray-900')
             ui.label('Click to start chatting').classes('text-sm text-gray-500')

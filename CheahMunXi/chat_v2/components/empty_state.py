@@ -31,8 +31,11 @@ def _create_empty_state_header():
 """Create empty state content"""
 def _create_empty_state_content():
     with ui.element('div').classes('custom-empty-state'):
+        # Chat icon (visual indicator for "empty")
         ui.icon('chat', size='3rem').classes('text-gray-400 mb-4')
+        # App name as large, light text
         ui.label(config.APP_NAME).classes('text-3xl font-light text-gray-700 my-4')
+        # Subtitle / helper message
         ui.label('Send and receive messages without keeping your phone online.').classes(
             'text-gray-500 text-center max-w-md'
         )
