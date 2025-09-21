@@ -11,6 +11,7 @@ class User(db.Model, UserMixin):
     posts = db.relationship('Post', backref='author',lazy=True)
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
     profile_image = db.Column(db.String(200), default="default.png")
+    comments = db.relationship('Comment', backref='user', lazy=True)
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -33,6 +34,4 @@ class Comment(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
 
-    # quick access
-    user = db.relationship('User', backref='comments', lazy=True)
-    post = db.relationship('Post', backref='comments', lazy=True)
+    
