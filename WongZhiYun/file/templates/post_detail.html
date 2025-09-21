@@ -10,6 +10,9 @@
         <img src="{{ url_for('static', filename='uploads/' + post.image) }}" style="max-width:400px;">
     {% endif %}
 
+    <hr>
+
+    <h3>Description</h3>
     <p>{{ post.description }}</p>
     <small>Posted by {{ post.author.username }} on {{ post.date_posted.strftime('%Y-%m-%d') }}</small>
 

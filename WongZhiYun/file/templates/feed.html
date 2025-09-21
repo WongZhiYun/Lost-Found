@@ -91,11 +91,9 @@
             <a href="{{ url_for('views.post_detail', post_id=post.id) }}" class="card-link">
                 <div class="card">
                     {% if post.image %}
-                    <img src="{% if post.image %}{{ url_for('static', filename='uploads/' + post.image) }}
+                        <img src="{{ url_for('static', filename='uploads/' + post.image) }}" alt="Item image">
                     {% else %}
-                    {{ url_for('static', filename='placeholder.png') }}
-                    {% endif %}" 
-                    alt="Item image">
+                        <div class="no-image">No picture</div>
                     {% endif %}
                     <div class="card-content">
                         <h3>{{ post.title }}</h3>
