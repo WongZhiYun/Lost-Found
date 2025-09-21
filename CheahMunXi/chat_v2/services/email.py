@@ -51,16 +51,16 @@ class EmailService:
             with self._create_smtp_connection() as server:
                 server.send_message(msg)
 
-            logger.info(f"✅ Email sent successfully to {', '.join(message.to)}")
+            logger.info(f"Email sent successfully to {', '.join(message.to)}")
             return True
         except smtplib.SMTPAuthenticationError:
-            logger.error("❌ SMTP authentication failed. Check username/password.")
+            logger.error("SMTP authentication failed. Check username/password.")
             return False
         except smtplib.SMTPException as e:
-            logger.error(f"❌ SMTP error: {e}")
+            logger.error(f"SMTP error: {e}")
             return False
         except Exception as e:
-            logger.error(f"❌ Unexpected error while sending email: {e}")
+            logger.error(f"Unexpected error while sending email: {e}")
             return False
     
     def send_new_message_notification(self, recipient_email: str, recipient_name: str, 
@@ -70,7 +70,7 @@ class EmailService:
         last_sent = self._last_notification_times.get(cooldown_key)
 
         if last_sent and now - last_sent < timedelta(seconds=config.EMAIL_NOTIFICATIONS_COOLDOWN):
-            logger.info(f"⏳ Email notification cooldown active for {recipient_email}")
+            logger.info(f"Email notification cooldown active for {recipient_email}")
             return False
 
         subject = f"{sender_name} sent you a new message"
@@ -121,7 +121,7 @@ class EmailService:
         <html>
         <head><meta charset="utf-8"></head>
         <body>
-            <h2>Hi {recipient_name} 👋</h2>
+            <h2>Hi {recipient_name} </h2>
             <p><strong>{sender_name}</strong> sent you {'a new message' if message_count == 1 else f'{message_count} new messages'}!</p>
             <p><a href="{app_url}">View message</a></p>
             <small>To avoid spam, notifications are sent at most once every {config.EMAIL_NOTIFICATIONS_COOLDOWN // 60} minutes.</small>
@@ -146,10 +146,10 @@ class EmailService:
     def test_connection(self) -> bool:
         try:
             with self._create_smtp_connection() as server:
-                logger.info("✅ SMTP connection test successful")
+                logger.info("SMTP connection test successful")
                 return True
         except Exception as e:
-            logger.error(f"❌ SMTP connection test failed: {str(e)}")
+            logger.error(f"SMTP connection test failed: {str(e)}")
             return False
     
     def get_config_info(self) -> dict:
@@ -169,9 +169,9 @@ class EmailService:
 try:
     email_service = EmailService() if config.EMAIL_NOTIFICATIONS_ENABLED else None
     if email_service:
-        logger.info("✅ Email service initialized successfully")
+        logger.info("Email service initialized successfully")
     else:
-        logger.info("ℹ️ Email service disabled via configuration")
+        logger.info("Email service disabled via configuration")
 except Exception as e:
     email_service = None
-    logger.warning(f"⚠️ Email service initialization failed: {e}")
+    logger.warning(f"Email service initialization failed: {e}")
