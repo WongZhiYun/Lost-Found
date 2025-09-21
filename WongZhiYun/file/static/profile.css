@@ -185,3 +185,16 @@
 .save-btn:hover {
     background: #72695c;
 }
+
+.btn-close {
+    background-color: #72695c;
+    border: none;
+    padding: 5px 10px;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 0.9rem;
+}
+.btn-close:hover {
+    background-color: #918674;
+}

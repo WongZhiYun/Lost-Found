@@ -44,6 +44,15 @@
                 <h4>{{ post.title }}</h4>
                 <p>{{ post.description }}</p>
                 <small>{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
+                {% if post.is_closed %}
+                    <span class="badge found">Founded</span>
+                {% else %}
+                    <span class="badge {{ post.type }}">{{ post.type|capitalize }}</span>
+                    <!-- Close button -->
+                    <form action="{{ url_for('views.close_post', post_id=post.id) }}" method="POST" style="margin-top:5px;">
+                        <button type="submit" class="btn-close">Mark as Founded</button>
+                    </form>
+                {% endif %}
             </div>
         {% else %}
             <p>You haven’t posted anything yet.</p>

@@ -24,6 +24,7 @@ class Post(db.Model):
     date_posted = db.Column(db.DateTime, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
     is_approved = db.Column(db.Boolean, default=False)
+    is_closed = db.Column(db.Boolean, default=False)
 
 class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)

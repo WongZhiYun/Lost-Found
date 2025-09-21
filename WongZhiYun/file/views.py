@@ -129,6 +129,18 @@ def public_profile(user_id):
     posts = Post.query.filter_by(user_id=user.id, is_approved=True).order_by(Post.date_posted.desc()).all()
     return render_template('profile.html', user=user, posts=posts)
 
+@views.route('/close_post/<int:post_id>', methods=['POST'])
+@login_required
+def close_post(post_id):
+    post = Post.query.get_or_404(post_id)
+    if post.user_id != current_user.id:
+        flash("You cannot close this post.", "error")
+        return redirect(url_for('views.profile'))
+
+    post.is_closed = True
+    db.session.commit()
+    flash("Post marked as founded.", "success")
+    return redirect(url_for('views.profile'))
 
 @views.route('/admin/dashboard')
 @login_required
