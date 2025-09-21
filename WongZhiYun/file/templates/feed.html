@@ -6,6 +6,7 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='feed.css') }}">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css">
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+        <script src="https://unpkg.com/lucide@latest"></script>
         <title>Lost and Found Board</title>
     </head>
 
@@ -24,6 +25,7 @@
                 <form class="search">
                     <input class="search-input" type="search" placeholder="Search">
                     <i class="fa-solid fa-magnifying-glass"></i>
+                    <i data-lucide="scan-search"></i>
                 </form>
             </div>
 
@@ -88,31 +90,36 @@
 
         <div class="card-container">
             {% for post in posts %}
-            <div class="card">
-                {% if post.image %}
-                <img src="{% if post.image %}{{ url_for('static', filename='uploads/' + post.image) }}
-                {% else %}
-                {{ url_for('static', filename='placeholder.png') }}
-                {% endif %}" 
-                alt="Item image">
-                {% endif %}
-                <div class="card-content">
-                    <h3>{{ post.title }}</h3>
-                    <p>{{ post.description }}</p>
-                    <small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
-                    {% if post.type == "lost" %}
-                    <span class="badge lost">Lost</span>
+            <a href="{{ url_for('views.post_detail', post_id=post.id) }}" class="card-link">
+                <div class="card">
+                    {% if post.image %}
+                        <img src="{{ url_for('static', filename='uploads/' + post.image) }}" alt="Item image">
                     {% else %}
-                    <span class="badge found">Found</span>
+                        <div class="no-image">No picture</div>
                     {% endif %}
+                    <div class="card-content">
+                        <h3>{{ post.title }}</h3>
+                        <p>{{ post.description }}</p>
+                        <small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
+                        
+                        {% if post.is_closed %}
+                            <span class="ribbon">Founded</span>
+                        {% elif post.type == "lost" %}
+                            <span class="badge lost">Lost</span>
+                        {% else %}
+                            <span class="badge found">Found</span>
+                        {% endif %}
+                    </div>
                 </div>
-            </div>
+            </a>
             {% endfor %}
         </div>
     </body>
 </html>
 
 <script>
+    lucide.createIcons();
+
     let accMenu = document.getElementById("accMenu");
 
     function toggleMenu(){

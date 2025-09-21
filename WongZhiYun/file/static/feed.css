@@ -33,11 +33,12 @@ body h1 {
     flex: 1;
     display: flex;
     justify-content: center;
+    align-items: center;
 }
 
 /* Left: home icon */
 .nav-left i.fa-home {
-  font-size: 20px;
+  font-size: 22px;
   cursor: pointer;
   color: #efe7da;
 }
@@ -71,16 +72,24 @@ body h1 {
   color: #555;
 }
 
-/* user and chat i */
+.nav-middle svg {
+    width: 28px;      /* make it bigger */
+    height: 28px;
+    stroke: #efe7da;  /* change line color */
+    stroke-width: 2;  /* thicker lines if needed */
+
+}
+
+/* user i */
 .nav-right i{
-  font-size: 20px;
+  font-size: 22px;
   cursor: pointer;
   color: #efe7da;
   margin-left: 20px;
 }
 
 
-/* Right: user icon */
+/* Right: chat icon */
 #chatButton {
   font-size: 22px;
   cursor: pointer;
@@ -319,6 +328,7 @@ body h1 {
 }
 
 .card {
+    position: relative;
     min-height: 350px;
     background: white;
     border-radius: 12px;
@@ -338,8 +348,42 @@ body h1 {
     object-fit: cover;
 }
 
+.card img, .card .no-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover; /* for img only */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f0f0;
+    color: #888;
+    font-size: 16px;
+}
+
 .card-content {
     padding: 15px;
+}
+
+.card-link { text-decoration: none; color: inherit; }
+
+/* Whole slope at card */
+.card .ribbon {
+    position: absolute;
+    top: 30px;
+    left: -10%;
+    width: 120%;
+    height: 120px;
+    background: rgba(149, 139, 108, 0.8); /* semi-transparent green */
+    color: white;
+    font-size: 2rem;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: uppercase;
+    transform: rotate(-17deg); /* slope angle */
+    pointer-events: none; /* clicks pass through */
+    z-index: 10;
 }
 
 .badge {
