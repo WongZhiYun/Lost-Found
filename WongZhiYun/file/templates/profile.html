@@ -2,6 +2,12 @@
 {% block title %}Profile{% endblock %}
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}">
+<link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+
+<!-- Back button -->
+<a href="{{ url_for('views.profile') }}" class="back-link">
+    <i class='bx bx-chevrons-left'></i> Back
+</a>
 
 <div class="profile-container">
     <!--User Header-->
