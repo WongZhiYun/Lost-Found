@@ -63,7 +63,7 @@ def _create_sidebar_header(db, current_user_id: int):
 
 
 """Create search bar"""
-def _create_search_bar(): 
+def _create_search_bar(): # Input for searching by username
     search_input = ui.input(placeholder='Search or start new chat').props(' clearable').classes('w-full bg-gray-100 px-4 py-2 ')
     return search_input
 
@@ -79,8 +79,10 @@ def load_conversations(db, current_user_id: int, container, search_term: str = "
     # Get the last message for each conversation partner
     partners_with_last_message = {}
     for msg in messages:
+        # Identify partner (the other user in the conversation)
         partner_id = msg.receiver_id if msg.sender_id == current_user_id else msg.sender_id
         
+        # If we don't already have this partner, save their latest message
         if partner_id not in partners_with_last_message:
             partner_user = db.query(User).get(partner_id)
             if partner_user:
@@ -111,6 +113,7 @@ def load_conversations(db, current_user_id: int, container, search_term: str = "
 
 """Show conversations list empty state"""
 def _show_conversations_empty_state(container):
+    # Shown when user has no chats at all
     with container:
         with ui.column().classes('flex-grow items-center justify-center p-8'):
             ui.icon('chat', size='3rem').classes('text-gray-400 mb-4')
@@ -121,6 +124,7 @@ def _show_conversations_empty_state(container):
 """Show search empty state"""
 def _show_conversations_search_empty_state(container, search_term: str):
     with container:
+        # Shown when search yields no results
         with ui.column().classes('flex-grow items-center justify-center p-8'):
             ui.icon('search_off', size='3rem').classes('text-gray-400 mb-4')
             ui.label(f'No results for "{search_term}"').classes('text-gray-500 text-center')
@@ -144,9 +148,11 @@ def _create_conversation_item(partner_id: int, data: dict):
     with ui.element('div').classes('custom-conversation-item').on('click', create_click_handler(partner_id)):
         ui.image(f'https://robohash.org/{partner.username}.png').classes('w-12 h-12 rounded-full flex-shrink-0 bg-gray-300')
         
+        # Conversation details (name + last message)
         with ui.element('div').classes('flex-1 min-w-0'):
             ui.label(partner.username).classes('custom-conversation-name text-sm font-normal text-gray-900 mb-0.5 truncate')
             display_message = truncate_message(last_message)
             ui.label(display_message).classes('custom-conversation-last-message text-sm font-normal text-gray-500 truncate')
         
+        # Timestamp of last message
         ui.label(time_str).classes('custom-conversation-time text-sm text-gray-500 whitespace-nowrap')

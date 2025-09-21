@@ -1,0 +1,355 @@
+
+body {
+    background-color: #f4f1e8;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+body h1 {
+    display: flex;
+    justify-content: center;
+    margin: 30px 0;
+    padding: 20px;
+}
+
+/* Navbar container */
+.navbar {
+  display: flex;
+  justify-content: space-between; /* left - middle - right */
+  align-items: center;
+  background-color: #918674;
+  padding: 18px 30px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+.nav-left,
+.nav-right {
+    display: flex;
+    align-items: center;
+}
+
+.nav-middle{
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+/* Left: home icon */
+.nav-left i.fa-home {
+  font-size: 20px;
+  cursor: pointer;
+  color: #efe7da;
+}
+
+
+/* Middle: search bar */
+.search {
+  display: flex;
+  align-items: center;
+  flex: 1; /* take available space */
+  max-width: 500px; /* limit length */
+  margin: 0 20px; /* spacing left and right */
+}
+
+.search-input {
+  flex: 1;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-right: none;
+  border-radius: 20px 0 0 20px;
+  outline: none;
+}
+
+.search i {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  border-left: none;
+  padding: 6px 12px;
+  border-radius: 0 20px 20px 0;
+  cursor: pointer;
+  color: #555;
+}
+
+/* user and chat i */
+.nav-right i{
+  font-size: 20px;
+  cursor: pointer;
+  color: #efe7da;
+  margin-left: 20px;
+}
+
+
+/* Right: user icon */
+#chatButton {
+  font-size: 22px;
+  cursor: pointer;
+  color: #efe7da;
+}
+
+/* Chat window (hidden by default) */
+#chatWindow {
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+  width: 350px;
+  height: 500px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  display: none;
+  flex-direction: column;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  overflow: hidden;
+  background: white;
+}
+
+/* Chat header */
+#chatHeader {
+  background: #0078ff;
+  color: white;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#chatHeader button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#chatHeader button:hover {
+  color: #ffdddd;
+}
+
+/* iFrame (fills chat window) */
+#chatFrame {
+  flex: 1;
+  border: none;
+}
+
+.acc-wrap{
+    position: absolute;
+    top: 50px;
+    right: 20px;
+    transform: translateX(-10%);
+    width: 200px;
+    max-height: 0px;
+    overflow: hidden;
+    transition: max-height 0.5s;
+    z-index: 999;
+}
+
+.acc-wrap.open-menu{
+    max-height: 400px;
+}
+
+.acc{
+    position: relative;
+    background: #fff;
+    padding: 20px;
+    margin: 2px;
+    border-radius: 8px;
+}
+
+.acc-menu{
+    display: flex;
+    align-items: center;
+    text-align: center;
+}
+
+.acc-menu h2{
+    font-size: 20px;
+}
+
+.acc-menu i{
+    width: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+    color: darkgray;
+}
+
+.acc hr{
+    border: 0;
+    height: 1px;
+    width: 100%;
+    background: #ccc;
+    margin: 15px 0 10px;
+}
+
+.acc-menu-link{
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: rgb(50, 36, 3);
+    margin: 12px 0;
+}
+
+.acc-menu-link p{
+    width: 100%;
+}
+
+.acc-menu-link i{
+    width: 40px;
+    border-radius: 50%;
+    padding: 8px;
+    margin-right: 15px;
+    color: darkgray;
+}
+
+
+.acc-menu-link:hover p{
+    font-weight: 600;
+}
+
+
+.filter-bar {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 30px 0;
+    padding: 0;
+}
+
+.filter-bar a {
+    padding: 10px 24px;
+    text-decoration: none;
+    color: #ab6f10;
+    border: 2px solid #b3907a;
+    border-radius: 25px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    background: #fff;
+}
+
+/* Hover effect */
+.filter-bar a:hover {
+    background: #b3907a;
+    color: #fff;
+}
+
+/* Active effect */
+.filter-bar a.active {
+    background: #b58d75;
+    color: #fff;
+    border-color: #7b5c4b;
+    font-weight: bold;
+    box-shadow: 0 4px 12px #b3907a;
+    transform: scale(1.05);
+}
+
+/*createpostbutton design */
+.create-post-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    background: #ff4757;        /* red-pink like YouTube + button */
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 28px;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    transition: 0.3s;
+    z-index: 1000;               /* stays above content */
+}
+
+.create-post-btn:hover {
+    background: #e84118;
+    transform: scale(1.1);
+}
+
+.report-form {
+    max-width: 500px;
+    margin: 30px auto;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.report-form label {
+    font-weight: bold;
+}
+
+.report-form input,
+.report-form textarea,
+.report-form select {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    outline: none;
+}
+
+.report-form textarea {
+    resize: vertical;
+}
+
+.submit-btn {
+    background: #918674;
+    color: #fff;
+    padding: 10px 0;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+.submit-btn:hover {
+    background: #7b5c4b;
+}
+
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.card {
+    min-height: 350px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    overflow: hidden;
+    width: 300px;
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.card-content {
+    padding: 15px;
+}
+
+.card-link { text-decoration: none; color: inherit; }
+
+.badge {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.badge.lost { background: #e74c3c; color: white; }
+.badge.found { background: #3498db; color: white; }
