@@ -89,8 +89,47 @@ def search_page():
 
     return render_template('search/results.html', results=scored_sorted, q=q, category=category, page=page, total=total)
 
+@bp.route('/api', methods=['GET'])
+def search_api():
+    """
+    JSON API: return basic fields + text_score + image_hash.
+    """
+    q = request.args.get('q', '').strip()
+    category = request.args.get('category', '').strip()
+    query = Report.query
+    query = query.filter(Report.status == 'approved')
+
+    if category:
+        query = query.filter(Report.category == category)
+    if q:
+        like_q = f"%{q}%"
+        query = query.filter(
+            (Report.title.ilike(like_q)) |
+            (Report.description.ilike(like_q)) |
+            (Report.place.ilike(like_q))
+        )
+
+    results = query.order_by(Report.created_at.desc()).limit(200).all()
+    data = []
+    for r in results:
+        ts = simple_text_score(r, q)
+        data.append({
+            'id': r.id,
+            'title': r.title,
+            'category': r.category,
+            'place': r.place,
+            'image': url_for('static', filename='uploads/' + (r.image_filename or '')) if r.image_filename else None,
+            'text_score': ts,
+            'image_hash': r.image_hash
+        })
+    return jsonify({'results': data})
+
+
 @bp.route('/by-image', methods=['POST'])
 def search_by_image():
+    """
+    image upload -> compute hash -> compare with DB image_hash -> show results.
+    """
     if 'file' not in request.files:
         return "No file part", 400
     file = request.files['file']
@@ -127,6 +166,10 @@ def search_by_image():
 
 @bp.route('/combined', methods=['POST'])
 def combined_search():
+    """
+    Accept q (optional) + file (optional) + alpha (weight for image).
+    Combine text_score and image_score into final_score and render results.
+    """
     q = request.form.get('q', '').strip()
     category = request.form.get('category', '').strip()
     alpha = float(request.form.get('alpha', 0.6))
