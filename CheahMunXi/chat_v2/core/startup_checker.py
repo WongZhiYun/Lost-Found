@@ -11,9 +11,10 @@ from services.email import email_service
 class StartupChecker:
     
     def __init__(self):
-        self.checks = []
-        self.warnings = []
-        self.errors = []
+        # Store results for checks
+        self.checks = [] # Successful checks
+        self.warnings = [] # Non-critical issues
+        self.errors = [] # Critical issues
     
     """Run all checks, return if the server can start"""
     def run_all_checks(self) -> bool:
@@ -57,9 +58,9 @@ class StartupChecker:
         
         for name, value in required_configs:
             if value and str(value).strip():
-                self._add_check(f"{name}: {value}")
+                self._add_check(f"{name}: {value}") #pass
             else:
-                self._add_error(f"{name} is not configured")
+                self._add_error(f"{name} is not configured") #fail
         
         # Check debug mode
         if config.DEBUG:
@@ -71,7 +72,7 @@ class StartupChecker:
         """Check database connection"""
         print("\nChecking database connection...")
         
-        try:
+        try: # Try to create tables to verify DB connection
             db_service.create_all_tables()
             self._add_check("Database tables created successfully")
         except Exception as e:
