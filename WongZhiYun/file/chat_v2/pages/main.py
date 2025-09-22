@@ -14,9 +14,9 @@ from file.models import User
 
 """Main chat page"""
 def main_page(chat_with: Optional[int] = None):
-    # Add CSS styles and meta tags
     _add_page_styles()
     
+    # Get the logged-in user's ID from session storage
     current_user_id = app.storage.user['user_id']
     db = SessionLocal()
     
@@ -43,6 +43,7 @@ def main_page(chat_with: Optional[int] = None):
     if chat_with:
         # Validate chat_with ID
         if _validate_chat_partner(db, chat_with, current_user_id):
+            # Load chat after short delay 
             ui.timer(0.2, lambda: create_chat_interface(chat_with, chat_container), once=True)
         else:
             # Invalid chat partner, redirect to main page
