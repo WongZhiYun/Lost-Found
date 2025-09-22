@@ -2,9 +2,10 @@
 Authentication pages
 """
 from nicegui import ui
-from config import config
-from core.utils import validate_email
-from handlers.auth import handle_login, handle_register
+from file.chat_v2.chat_config import config
+from file.chat_v2.core.utils import validate_email
+from ..handlers.auth import handle_login, handle_register
+
 
 
 """Login/Register page"""
@@ -29,10 +30,8 @@ def show_login_page():
                 # Login panel
                 with ui.tab_panel('Login'):
                     _create_login_form()
-                
-                # Register panel
-                with ui.tab_panel('Register'):
-                    _create_register_form()
+           
+
 
 
 """Create login form"""
@@ -66,45 +65,4 @@ def _create_login_form():
     ui.button(
         'Login', 
         on_click=validate_and_login
-    ).classes('w-full py-3 rounded-lg bg-green-600 text-white font-semibold hover:bg-green-700')
-
-
-"""Create register form"""
-def _create_register_form():
-
-    ui.query('.q-field--outlined .q-field__control').classes('!rounded-lg')
-
-    username_reg = ui.input('Username', validation={'Username must be at least 3 characters': lambda value: len(value) >= 3}).classes('w-full').props('outlined').props('required')
-    email_reg = ui.input('Email', validation={'Invalid email format': lambda value: validate_email(value)}).classes('w-full').props('outlined').props('required')
-    password_reg = ui.input('Password', password=True, password_toggle_button=True, validation={'Password must be at least 8 characters': lambda value: len(value) >= 8}).classes('w-full mb-4').props('outlined').props('required')
-    
-    # Validate input and register
-    def validate_and_register():
-        # Check empty fields
-        if not username_reg.value or not username_reg.value.strip():
-            ui.notify('Please enter username', color='negative')
-            username_reg.props('error error-message="Username is required"')
-            return
-            
-        if not email_reg.value or not email_reg.value.strip():
-            ui.notify('Please enter email', color='negative')
-            email_reg.props('error error-message="Email is required"')
-            return
-            
-        if not password_reg.value or not password_reg.value.strip():
-            ui.notify('Please enter password', color='negative')
-            password_reg.props('error error-message="Password is required"')
-            return
-        
-        # Clear error status
-        username_reg.props(remove='error')
-        email_reg.props(remove='error')
-        password_reg.props(remove='error')
-        
-        # Execute register
-        handle_register(username_reg.value.strip(), email_reg.value.strip(), password_reg.value.strip())
-    
-    ui.button(
-        'Register',
-        on_click=validate_and_register
     ).classes('w-full py-3 rounded-lg bg-green-600 text-white font-semibold hover:bg-green-700')

@@ -2,18 +2,24 @@
 Database Service
 """
 import logging
+import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 from sqlalchemy.pool import StaticPool
-from config import config
+from file.chat_v2.chat_config import config
 
 # Configure logging
 logger = logging.getLogger(__name__)
 logger.setLevel(getattr(logging, config.LOG_LEVEL.upper()))
 
+DB_PATH = config.DB_DATABASE   # 👈 use the one from config.py
+print(f"[*] NiceGUI using database: {DB_PATH}")
+print(">>> DB_PATH =", DB_PATH)
+
 engine = create_engine(
-    config.get_database_url(),
-    connect_args={'check_same_thread': False},
+    f"sqlite:///{DB_PATH}",
+    connect_args={"check_same_thread": False},
+
     poolclass=StaticPool
 )
 

@@ -26,11 +26,11 @@ class EmailMessage:
     reply_to: Optional[str] = None # Optional reply-to address
 
 
+
 class EmailService:
     """Email service class"""
     
     def __init__(self, mail_config=None):
-        # Load mail configuration
         self.mail_config = mail_config or config.get_mail_config()
         self._last_notification_times = {}  # For preventing duplicate sending
         
@@ -97,7 +97,9 @@ class EmailService:
             message_count=message_count
         )
         
+
         # Build message object
+
         message = EmailMessage(
             to=[recipient_email],
             subject=subject,
@@ -113,6 +115,7 @@ class EmailService:
     
     def _create_smtp_connection(self):
         """Create and return an SMTP (or SMTP_SSL) connection"""
+
         if self.mail_config['use_ssl']:
             server = smtplib.SMTP_SSL(self.mail_config['host'], self.mail_config['port'])
         else:
@@ -126,6 +129,7 @@ class EmailService:
         return server
     
     def _create_notification_html(self, recipient_name: str, sender_name: str, message_count: int) -> str:
+
          #Generate HTML body for message notification
         app_url = config.APP_URL
         app_name = config.APP_NAME
@@ -169,6 +173,7 @@ class EmailService:
     
     def get_config_info(self) -> dict:
         #Return masked mail configuration info (for debugging)
+
         return {
             'host': self.mail_config['host'],
             'port': self.mail_config['port'],
@@ -191,3 +196,4 @@ try:
 except Exception as e:
     email_service = None
     logger.warning(f"Email service initialization failed: {e}")
+

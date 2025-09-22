@@ -4,8 +4,8 @@ Authentication Middleware
 from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint
 from starlette.requests import Request
 from starlette.responses import RedirectResponse, Response
-from models import User
-from services.database import SessionLocal
+from file.models import User
+from ..services.database import SessionLocal
 from nicegui import app
 
 

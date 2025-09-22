@@ -4,7 +4,7 @@ This file is responsible for creating and managing the visual components of the 
 It holds UI state (like pending image uploads) but does not perform business logic like saving files or database operations.
 """
 from nicegui import ui
-from core.utils import safe_str
+from ..core.utils import safe_str
 import uuid
 from pathlib import Path
 import base64
@@ -54,6 +54,7 @@ def create_input_area(on_send: Callable) -> ui.input:
 
     with ui.element('div').classes('custom-input-area'):
         ui.query('.q-btn--fab').classes('!p-2 !min-w-12 !min-h-12')
+
         with ui.fab('add', direction='up'):      # Main FAB button (a round '+' button that expands upwards)
             # Sub-action: "Picture" button inside the FAB menu
             ui.fab_action('image', label='Picture').classes('!mb-3 !ml-10').on('click', lambda: uploader.run_method('pickFiles'))
@@ -91,6 +92,7 @@ def create_message_bubble(msg, current_user_id: int, open_viewer_func: Callable)
     
     with ui.element('div').classes(message_class):
         with ui.element('div').classes('p-1'):
+
             if msg.content:   # If the message has text content, render it
                 with ui.element('div').classes('px-2 py-1'):
                     ui.html(f'<div>{safe_str(msg.content)}</div>')
@@ -130,6 +132,7 @@ def _create_image_grid(media_items: List, open_viewer_func: Callable) -> None:
             # Multiple image thumbnails
             for i, item in enumerate(images_to_display):
                 with ui.element('div').classes('relative aspect-square cursor-pointer'):
+
                     # Display thumbnail
                     ui.image(f"/static/uploads/{item.file_url}").classes('w-full h-full object-cover')
                     # If there are more than 4 images, show "+N" overlay on last
@@ -164,6 +167,7 @@ def handle_image_upload(e, preview_container: ui.element) -> None:
 
 def refresh_image_previews(preview_container: ui.element) -> None:
     """Re-renders the image preview grid based on the current UI state."""
+
     if not uploaded_images: # If no images, hide preview area
         preview_container.classes('hidden', remove='p-2')
         preview_container.clear()
@@ -190,6 +194,7 @@ def refresh_image_previews(preview_container: ui.element) -> None:
 def remove_image_preview(preview_container: ui.element, image_uuid_to_remove: str) -> None:
     """Removes an image from the temporary UI state and refreshes the preview."""
     global uploaded_images
+
     # Filter out the image with the matching UUID
     uploaded_images = [img for img in uploaded_images if img['uuid_name'] != image_uuid_to_remove]
     # Re-render the preview area after removal

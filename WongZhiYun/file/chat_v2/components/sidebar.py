@@ -3,10 +3,10 @@ Sidebar component
 """
 from nicegui import ui
 from sqlalchemy import or_
-from core.utils import format_timestamp, truncate_message
-from models import Message, User
-from components.dialogs import open_new_chat_dialog
-from handlers.auth import handle_logout
+from ..core.utils import format_timestamp, truncate_message
+from file.models import Message, User
+from ..components.dialogs import open_new_chat_dialog
+from ..handlers.auth import handle_logout
 
 
 """Create sidebar component"""
@@ -147,12 +147,11 @@ def _create_conversation_item(partner_id: int, data: dict):
     # Conversation item container
     with ui.element('div').classes('custom-conversation-item').on('click', create_click_handler(partner_id)):
         ui.image(f'https://robohash.org/{partner.username}.png').classes('w-12 h-12 rounded-full flex-shrink-0 bg-gray-300')
-        
+
         # Conversation details (name + last message)
         with ui.element('div').classes('flex-1 min-w-0'):
             ui.label(partner.username).classes('custom-conversation-name text-sm font-normal text-gray-900 mb-0.5 truncate')
             display_message = truncate_message(last_message)
             ui.label(display_message).classes('custom-conversation-last-message text-sm font-normal text-gray-500 truncate')
-        
         # Timestamp of last message
         ui.label(time_str).classes('custom-conversation-time text-sm text-gray-500 whitespace-nowrap')

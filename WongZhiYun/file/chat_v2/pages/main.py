@@ -3,13 +3,13 @@ Main page component
 """
 from typing import Optional
 from nicegui import app, ui # type: ignore
-from config import config
-from services.database import SessionLocal
-from components.sidebar import create_sidebar
-from components.chat_area import create_chat_area
-from components.empty_state import show_empty_state
-from handlers.chat import create_chat_interface
-from models import User
+from file.chat_v2.chat_config import config
+from ..services.database import SessionLocal
+from ..components.sidebar import create_sidebar
+from ..components.chat_area import create_chat_area
+from ..components.empty_state import show_empty_state
+from ..handlers.chat import create_chat_interface
+from file.models import User
 
 
 """Main chat page"""
@@ -43,6 +43,7 @@ def main_page(chat_with: Optional[int] = None):
     if chat_with:
         # Validate chat_with ID
         if _validate_chat_partner(db, chat_with, current_user_id):
+
             # Load chat after short delay 
             ui.timer(0.2, lambda: create_chat_interface(chat_with, chat_container), once=True)
         else:

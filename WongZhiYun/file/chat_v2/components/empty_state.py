@@ -2,7 +2,7 @@
 Empty state component
 """
 from nicegui import ui
-from config import config
+from file.chat_v2.chat_config import config
 
 
 """Show empty chat state"""

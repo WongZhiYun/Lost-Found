@@ -2,9 +2,9 @@
 Startup System Checker - Verify database, email, and other configurations
 """
 import sys
-from config import config
-from services.database import db_service
-from services.email import email_service
+from file.chat_v2.chat_config import config
+from ..services.database import db_service
+from ..services.email import email_service
 
 
 """Startup Checker - Verify system configurations and dependencies"""
@@ -73,6 +73,7 @@ class StartupChecker:
         print("\nChecking database connection...")
         
         try: # Try to create tables to verify DB connection
+
             db_service.create_all_tables()
             self._add_check("Database tables created successfully")
         except Exception as e:
