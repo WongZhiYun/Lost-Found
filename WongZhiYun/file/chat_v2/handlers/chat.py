@@ -8,6 +8,7 @@ from file.models import Media, Message, User
 from ..services.database import SessionLocal
 from ..services.email import email_service  # ✅ Import global email service
 from ..components.chat_area import (
+
     create_chat_header, create_input_area, create_messages_container,
     create_message_bubble
 )
@@ -22,12 +23,16 @@ def create_chat_interface(partner_id: int, container: ui.element) -> None:
         current_user_id = app.storage.user['user_id']
         partner = db.query(User).get(partner_id)
         if not partner:
+            # Show error if user not found
             ui.label("User not found.").classes('m-4')
             return
             
+        # Reset container and build UI    
         container.clear()
         with container:
+            # Chat header (partner name, back/menu buttons)
             create_chat_header(partner, on_menu_click=lambda: ui.run_javascript(_toggle_sidebar_js(True)))
+            # Messages container
             messages_container = create_messages_container()
 
             # Image viewer dialog
@@ -39,6 +44,8 @@ def create_chat_interface(partner_id: int, container: ui.element) -> None:
                     'w-full h-full bg-black'
                 ).props('swipeable draggable transition-prev="slide-right" transition-next="slide-left"')
             
+
+            # Function to open image viewer
             def open_image_viewer(media_items, start_index):
                 image_carousel.clear()
                 with image_carousel:
@@ -48,6 +55,9 @@ def create_chat_interface(partner_id: int, container: ui.element) -> None:
                                 'fit=contain'
                             ).classes('w-full h-screen')
                 target_slide_name = f'slide_{start_index}'
+
+                # Delay slide change to ensure rendering
+
                 ui.timer(0.1, lambda: image_carousel.set_value(target_slide_name), once=True)
                 image_dialog.open()
 
@@ -88,12 +98,14 @@ def send_message(input_field, images_to_upload: List[Dict], messages_container,
         db.commit()
 
         print(f"Message saved to DB - ID: {new_msg.id}")
+
+        # Clear input field after sending
         input_field.set_value('')
 
         # Update UI
         _reload_and_display_messages(db, current_user_id, partner_id, messages_container, open_viewer_func)
 
-        # ✅ Send email notification
+        # Send email notification
         partner = db.query(User).get(partner_id)
         sender = db.query(User).get(current_user_id)
         if email_service and partner and partner.email:
@@ -107,6 +119,7 @@ def send_message(input_field, images_to_upload: List[Dict], messages_container,
         db.rollback()
         ui.notify(f'Failed to send message: {str(e)}', color='negative')
         print(f"Transaction failed: {e}")
+        # Cleanup uploaded files on failure
         _cleanup_failed_upload(saved_filenames)
     finally:
         db.close()

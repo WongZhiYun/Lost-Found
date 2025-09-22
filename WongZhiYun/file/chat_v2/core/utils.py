@@ -38,6 +38,8 @@ def validate_email(email: str) -> bool:
     Returns:
         bool: Whether valid
     """
+
+    # Simple regex for basic email validation
     email_regex = r'^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
     return bool(re.match(email_regex, email))
 
@@ -71,4 +73,7 @@ def safe_str(obj) -> str:
     try:
         return str(obj) if obj is not None else ''
     except Exception:
+
+        # If conversion raises an error, return empty string
+
         return ''

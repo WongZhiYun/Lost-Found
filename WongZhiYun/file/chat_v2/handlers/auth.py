@@ -6,6 +6,7 @@ from file.models import User
 from ..services.database import SessionLocal
 
 
+
 """Handle user login"""
 def handle_login(username: str, password: str):        
     db = SessionLocal()
@@ -23,7 +24,6 @@ def handle_login(username: str, password: str):
         ui.notify('Invalid username or password', color='negative')
         
     db.close()
-
 
 """Handle user logout"""
 def handle_logout():

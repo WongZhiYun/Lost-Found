@@ -13,7 +13,8 @@ def test_email_service():
     print("Start testing email service...")
     
     try:
-        
+
+        # Check if email service is properly configured
         if not email_service:
             print("Email service not configured or configured incorrectly")
             print("Please check your SMTP configuration, refer to email_setup_guide.txt")
@@ -27,7 +28,8 @@ def test_email_service():
             print("SMTP connection test failed")
             return False
         
-        # Test email sending (optional)
+        # Ask user if they want to send a test email
+
         test_send = input("\nWhether to send test email? (enter email address, or press Enter to skip): ").strip()
         if test_send and '@' in test_send:
             print(f"Send test email to {test_send}...")
@@ -137,6 +139,8 @@ SMTP_PRESETS = {
 }
 
 if __name__ == "__main__":
+    # CLI menu loop
+
     print("Chat App email service test tool")
     print("=" * 50)
     

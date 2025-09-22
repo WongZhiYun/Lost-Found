@@ -7,6 +7,7 @@ from file.chat_v2.core.utils import validate_email
 from ..handlers.auth import handle_login, handle_register
 
 
+
 """Login/Register page"""
 def show_login_page():
     """Set page styles"""
@@ -29,6 +30,8 @@ def show_login_page():
                 # Login panel
                 with ui.tab_panel('Login'):
                     _create_login_form()
+           
+
 
 
 """Create login form"""
