@@ -187,7 +187,7 @@ try:
     if email_service:
         logger.info("Email service initialized successfully")
     else:
-        logger.info("ℹEmail service disabled via configuration")
+        logger.info("Email service disabled via configuration")
 except Exception as e:
     email_service = None
     logger.warning(f"Email service initialization failed: {e}")
