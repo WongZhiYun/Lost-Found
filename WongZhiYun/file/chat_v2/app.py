@@ -4,14 +4,18 @@ Chat App - Main Application
 This is a modern chat application based on NiceGUI
 Features include: user authentication, chat, email notifications
 """
+import os
+STATIC_REAL_PATH = os.path.join(os.path.dirname(__file__), 'static')
+print('>>> STATIC_REAL_PATH =', STATIC_REAL_PATH)
+print('>>> Exists?', os.path.exists(STATIC_REAL_PATH))
 from nicegui import app, ui
-from config import config
-from pages.main import main_page
-from pages.chat import direct_chat_page
-from pages.auth import show_login_page
-from core.startup_checker import run_startup_checks
-from core.middleware import AuthMiddleware
-from services.database import db_service
+from .chat_config import config
+from .pages.main import main_page
+from .pages.chat import direct_chat_page
+from .pages.auth import show_login_page
+from file.chat_v2.core.startup_checker import run_startup_checks
+from file.chat_v2.core.middleware import AuthMiddleware
+from .services.database import db_service
 
 #Setup application routes
 def setup_routes():
@@ -41,7 +45,7 @@ def main():
     app.add_middleware(AuthMiddleware)
 
     # Setup static files
-    app.add_static_files(config.STATIC_URL, config.STATIC_DIR)
+    app.add_static_files('/static', STATIC_REAL_PATH)
     
     # Start application
     ui.run(

@@ -10,7 +10,7 @@ from typing import List, Optional
 from datetime import datetime, timedelta
 from dataclasses import dataclass
 
-from config import config
+from file.chat_v2.chat_config import config
 
 # Configure logging
 logger = logging.getLogger(__name__)

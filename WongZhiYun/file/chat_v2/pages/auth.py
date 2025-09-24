@@ -4,7 +4,7 @@ Authentication pages
 from nicegui import ui
 from file.chat_v2.chat_config import config
 from file.chat_v2.core.utils import validate_email
-from ..handlers.auth import handle_login, handle_register
+from ..handlers.auth import handle_login
 
 
 """Login/Register page"""

@@ -35,4 +35,29 @@ class Comment(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
 
+class Message(db.Model):
+    __tablename__ = 'messages'  
+
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.String(500), nullable=True)  
+    created_at = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     
+    sender_id = db.Column(db.Integer, db.ForeignKey('user.id')) 
+    receiver_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+    sender = db.relationship('User', foreign_keys=[sender_id], backref='sent_messages', lazy=True)
+    receiver = db.relationship('User', foreign_keys=[receiver_id], backref='received_messages', lazy=True)
+
+    media_items = db.relationship('Media', backref='message', cascade='all, delete-orphan')
+
+class Media(db.Model):
+    __tablename__ = 'media'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    # This is the crucial link back to the message
+    message_id =db.Column(db.Integer, db.ForeignKey('messages.id'), nullable=False)
+    # Stores the UUID filename, e.g., 'abc-123.png'
+    file_url = db.Column(db.String(255), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
