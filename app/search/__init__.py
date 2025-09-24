@@ -11,14 +11,17 @@ from app.models import Report
 # create blueprint
 bp = Blueprint('search', __name__, template_folder='templates')
 
+# Get the upload folder path (used to save user-uploaded images)
 def get_upload_folder():
     return current_app.config.get('UPLOAD_FOLDER', os.path.join(current_app.root_path, 'static', 'uploads'))
 
+# for calculate image hash（pHash）
 def compute_image_hash(image_path):
     img = Image.open(image_path).convert('RGB')
     h = imagehash.phash(img)
     return str(h)
 
+# Calculate the Hamming distance of the hash values ​​of two images (the smaller the difference, the more similar they are)
 def hamming_distance_hex(hash_hex1, hash_hex2):
     if not hash_hex1 or not hash_hex2:
         return None
@@ -29,13 +32,14 @@ def hamming_distance_hex(hash_hex1, hash_hex2):
     except Exception:
         return None
 
+# Calculate image similarity based on distance (between 0~1）
 def image_similarity_from_distance(distance, hash_hex):
     if distance is None:
         return 0.0
     try:
         bits = imagehash.hex_to_hash(hash_hex).hash.size
     except Exception:
-        bits = 64
+        bits = 64 #Default 8x8 hash, 64 bits
     sim = max(0.0, 1.0 - (distance / bits))
     return sim
 
@@ -55,6 +59,7 @@ def simple_text_score(item, q):
 def combine_scores(text_score, image_score, alpha=0.6):
     return alpha * image_score + (1 - alpha) * text_score
 
+# keyword search page
 @bp.route('/', methods=['GET'])
 def search_page():
     q = request.args.get('q', '').strip()
@@ -89,6 +94,7 @@ def search_page():
 
     return render_template('search/results.html', results=scored_sorted, q=q, category=category, page=page, total=total)
 
+# search API (return json data)
 @bp.route('/api', methods=['GET'])
 def search_api():
     """
@@ -125,6 +131,7 @@ def search_api():
     return jsonify({'results': data})
 
 
+# upload image search
 @bp.route('/by-image', methods=['POST'])
 def search_by_image():
     """
@@ -136,6 +143,7 @@ def search_by_image():
     if file.filename == '':
         return "No selected file", 400
 
+    # save upload image
     filename = secure_filename(file.filename)
     upload_folder = get_upload_folder()
     os.makedirs(upload_folder, exist_ok=True)
@@ -160,10 +168,12 @@ def search_by_image():
             img_score = image_similarity_from_distance(distance, query_hash)
         scored.append({'report': r, 'image_distance': distance, 'image_score': img_score, 'text_score': 0.0, 'final_score': img_score})
 
+    # show top 20 most similar results
     scored_sorted = sorted(scored, key=lambda x: x['final_score'], reverse=True)[:20]
 
     return render_template('search/results.html', results=scored_sorted, q='[image search]', category='')
 
+# combined search(keyword + image) + alpha
 @bp.route('/combined', methods=['POST'])
 def combined_search():
     """
