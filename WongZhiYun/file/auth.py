@@ -1,11 +1,14 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from werkzeug.security import generate_password_hash, check_password_hash
+from itsdangerous import URLSafeSerializer
 from flask_login import login_user, logout_user, login_required
 from .models import User
-from . import db
+from . import db,mail
+from flask_mail import Message
 from .otp import generate_otp, send_otp_email
 
 auth = Blueprint('auth', __name__)
+s = URLSafeSerializer("hello")
 
 @auth.route('/login', methods=['GET','POST'])
 def login():
