@@ -83,6 +83,19 @@ form{
     font-size: 20px;
 }
 
+
+.input-box i.fa-lock {
+    right: 20px;
+}
+
+.input-box i.fa-eye,
+.input-box i.fa-eye-slash {
+    right: 50px;     /* Eye stays on the right */
+    left: auto;
+    width: 24px;     /* Keep width fixed to stop shifting */
+    text-align: center;
+}
+
 .tandc-link{
     margin: -15px 0 20px;
     display: flex;

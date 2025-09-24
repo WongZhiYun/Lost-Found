@@ -23,6 +23,7 @@
                     <div class="input-box">
                         <input type="password" name="password" placeholder="Password" required>
                         <i class="fa-solid fa-lock"></i>
+                        <i class="fa-solid fa-eye" onclick="togglePassword(this)"></i>
                     </div>
                     <div class="tandc-link">
                         <label>
@@ -66,3 +67,16 @@
 
     </body>
 </html>
+
+<script>
+    function togglePassword(icon) {
+    const input = icon.parentElement.querySelector('input');
+    if (input.type === "password") {
+        input.type = "text";
+        icon.classList.replace('fa-eye', 'fa-eye-slash');
+    } else {
+        input.type = "password";
+        icon.classList.replace('fa-eye-slash', 'fa-eye');
+    }
+}
+</script>
