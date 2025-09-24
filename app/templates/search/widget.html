@@ -6,8 +6,13 @@
       <input class="lf-input lf-keyword" type="text" name="q" value="{{ q or '' }}" placeholder="Search keywords..." />
       <select class="lf-select" name="category">
         <option value="">All categories</option>
+        <option value="Bag" {% if category=='Bag' %}selected{% endif %}>Bag</option>
+        <option value="Wallet" {% if category=='Wallet' %}selected{% endif %}>Wallet</option>
+        <option value="Keys" {% if category=='Keys' %}selected{% endif %}>Keys</option>
+        <option value="Clothes" {% if category=='Clothes' %}selected{% endif %}>Clothes</option>
         <option value="Electronics" {% if category=='Electronics' %}selected{% endif %}>Electronics</option>
         <option value="Stationery" {% if category=='Stationery' %}selected{% endif %}>Stationery</option>
+        <option value="Others" {% if category=='Others' %}selected{% endif %}>Others</option>
       </select>
       <button class="lf-btn" type="submit">Search</button>
     </div>
@@ -28,10 +33,8 @@
         <input type="file" name="file" accept="image/*" class="lf-file-input" />
         <span class="lf-file-label">Choose</span>
       </label>
-      <label class="alpha-label">Image weight:
-        <input class="lf-alpha" type="number" name="alpha" min="0" max="1" step="0.1" value="0.6" />
-      </label>
-      <button class="lf-btn" type="submit">Combined</button>
+      <input type="hidden" name="alpha" value="0.6" />
+      <button class="lf-btn" type="submit">Combined search</button>
     </form>
   </div>
 

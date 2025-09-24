@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <title>Search Results</title>
   <style>
+    /* Search result card style */
     .card { border: 1px solid #ddd; padding: 8px; margin: 8px 0; display:flex; gap:12px; }
     .thumb { width: 100px; height: 80px; object-fit:cover; }
     .meta { flex:1; }
@@ -17,8 +18,13 @@
     <input type="text" name="q" value="{{ q }}" placeholder="Search keywords..." />
     <select name="category">
       <option value="">All categories</option>
+      <option value="Bag" {% if category=='Bag' %}selected{% endif %}>Bag</option>
+      <option value="Wallet" {% if category=='Wallet' %}selected{% endif %}>Wallet</option>
+      <option value="Keys" {% if category=='Keys' %}selected{% endif %}>Keys</option>
+      <option value="Clothes" {% if category=='Clothes' %}selected{% endif %}>Clothes</option>
       <option value="Electronics" {% if category=='Electronics' %}selected{% endif %}>Electronics</option>
       <option value="Stationery" {% if category=='Stationery' %}selected{% endif %}>Stationery</option>
+      <option value="Others" {% if category=='Others' %}selected{% endif %}>Others</option>
     </select>
     <button type="submit">Search</button>
   </form>
@@ -29,22 +35,26 @@
     <button type="submit">Search by Image</button>
   </form>
 
-  <!-- Combined form (q + file + alpha) -->
+  <!-- Combined form (keyword + image + alpha) -->
   <form method="post" action="{{ url_for('search.combined_search') }}" enctype="multipart/form-data" style="margin-top:12px;">
     <input type="text" name="q" value="{{ q }}" placeholder="Keywords (optional)"/>
     <input type="file" name="file" accept="image/*"/>
-    <label>Image weight (alpha): <input type="number" name="alpha" min="0" max="1" step="0.1" value="0.6"/></label>
+    <!-- Hide alpha weight, used to control the ratio of keyword to image similarity (default 0.6) -->
+    <input type="hidden" name="alpha" value="0.6" />
     <button type="submit">Combined Search</button>
   </form>
 
- <hr/>
-
-{% if results %}
+  <hr/>
+  
+  <!-- for search results area -->
+  {% if results %}
     {% for item in results %}
+      <!-- Deconstruct each result data: support two data structures -->
       {% set r = item.report if item.report is defined else item[0] %}
       {% set ts = item.text_score if item.text_score is defined else 0 %}
       {% set is_ = item.image_score if item.image_score is defined else 0 %}
       {% set fs = item.final_score if item.final_score is defined else (ts) %}
+      <!-- every result card -->
       <div class="card">
         <div>
           {% if r.image_filename %}
@@ -58,6 +68,7 @@
           <div>{{ r.place or '' }} — {{ r.created_at.strftime('%Y-%m-%d') if r.created_at else '' }}</div>
           <p>{{ r.description[:180] }}{% if r.description|length > 180 %}...{% endif %}</p>
         </div>
+        <!-- Similarity score -->
         <div style="text-align:right;">
           <div class="score">Final: {{ (fs*100)|round(0) }}%</div>
           <div>Text: {{ (ts*100)|round(0) }}%</div>
@@ -66,6 +77,7 @@
       </div>
     {% endfor %}
   {% else %}
+    <!-- if no results -->
     <p>No results.</p>
   {% endif %}
 </body>
