@@ -1,11 +1,13 @@
-{# app/templates/search/_widget.html - REPLACE THIS FILE #}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/search.css') }}">
 
+<!-- Load the CSS for search widget -->
 <div class="lf-search-widget">
-  <!-- Keyword search (GET) -->
+  <!-- Keyword search -->
   <form class="lf-search-form" method="get" action="{{ url_for('search.search_page') }}">
     <div class="lf-row">
+      <!-- Input field for search keywords -->
       <input class="lf-input lf-keyword" type="text" name="q" value="{{ q or '' }}" placeholder="Search keywords..." />
+      <!-- Dropdown menu for select category -->
       <select class="lf-select" name="category">
         <option value="">All categories</option>
         <option value="Bag" {% if category=='Bag' %}selected{% endif %}>Bag</option>
@@ -20,9 +22,10 @@
     </div>
   </form>
 
-  <!-- Image search (POST) -->
+  <!-- Image search -->
   <div class="lf-row lf-image-controls" style="margin-top:10px;">
     <form class="inline" method="post" action="{{ url_for('search.search_by_image') }}" enctype="multipart/form-data">
+      <!-- File input for select image -->
       <label class="lf-file">
         <input type="file" name="file" accept="image/*" class="lf-file-input" required />
         <span class="lf-file-label">Choose image</span>

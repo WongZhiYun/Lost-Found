@@ -1,10 +1,15 @@
 {% if results %}
+  <!-- If got results, show in the list -->
   <div class="lf-results">
     {% for item in results %}
+     <!-- English: Get the report object -->
       {% set r = item.report if item.report is defined else item[0] %}
+      
+      <!-- Every search result card -->
       <article class="lf-card">
         <div class="lf-thumb-wrap">
           {% if r.image %}
+           <!-- Show uploaded image -->
             <img src="{{ url_for('static', filename='uploads/' ~ r.image) }}" alt="{{ r.title or 'item image' }}" />
           {% else %}
             <div>No image</div>
@@ -19,5 +24,6 @@
     {% endfor %}
   </div>
 {% else %}
+  <!-- Message when no results found -->
   <div>No results.</div>
 {% endif %}

@@ -7,18 +7,22 @@ import imagehash
 from app import db
 from app.models import Report
 
+# Define a Blueprint for search-related features
 bp = Blueprint('search', __name__, template_folder='templates')
 
 # ---------- helpers ----------
 def get_upload_folder():
+    # Get upload folder
     return current_app.config.get('UPLOAD_FOLDER', os.path.abspath(os.path.join(current_app.root_path, 'static', 'uploads')))
 
 def compute_image_hash(image_path):
+    # Compute perceptual hash (pHash) for an image
     img = Image.open(image_path).convert('RGB')
     h = imagehash.phash(img)
     return str(h)
 
 def hamming_distance_hex(hash_hex1, hash_hex2):
+     # Compute Hamming distance between two image hashes
     if not hash_hex1 or not hash_hex2:
         return None
     try:
@@ -29,6 +33,7 @@ def hamming_distance_hex(hash_hex1, hash_hex2):
         return None
 
 def image_similarity_from_distance(distance, hash_hex):
+    # Convert Hamming distance to similarity score
     if distance is None:
         return 0.0
     try:
@@ -39,6 +44,7 @@ def image_similarity_from_distance(distance, hash_hex):
     return sim
 
 def simple_text_score(item, q):
+    # Simple text matching score (title/description/location)
     if not q:
         return 0.0
     q_lower = q.lower()
@@ -52,11 +58,13 @@ def simple_text_score(item, q):
     return min(score, 1.0)
 
 def combine_scores(text_score, image_score, alpha=0.6):
+    # Combine text & image scores, alpha weights image more
     return alpha * image_score + (1 - alpha) * text_score
 
 # ---------- routes ----------
 @bp.route('/', methods=['GET'])
 def search_page():
+    # Search page (keyword/category filter, returns HTML)
     q = request.args.get('q', '').strip()
     category = request.args.get('category', '').strip()
     page = max(1, int(request.args.get('page', 1)))
@@ -88,6 +96,7 @@ def search_page():
 
 @bp.route('/api', methods=['GET'])
 def search_api():
+    # Provide JSON search results (for API use)
     q = request.args.get('q', '').strip()
     category = request.args.get('category', '').strip()
     query = Report.query.filter(Report.is_approved == True)
@@ -119,6 +128,7 @@ def search_api():
 
 @bp.route('/by-image', methods=['POST'])
 def search_by_image():
+    # Search reports by uploaded image similarity
     if 'file' not in request.files:
         return "No file part", 400
     file = request.files['file']
@@ -153,6 +163,7 @@ def search_by_image():
 
 @bp.route('/combined', methods=['POST'])
 def combined_search():
+    # Combined text + image search
     q = request.form.get('q', '').strip()
     category = request.form.get('category', '').strip()
     alpha = 0.6 

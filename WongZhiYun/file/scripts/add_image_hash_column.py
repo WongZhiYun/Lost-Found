@@ -1,7 +1,9 @@
 import sqlite3
 import sys
 
+# Get database path from command line else default to "instance/users.db"
 db_path = sys.argv[1] if len(sys.argv) > 1 else "instance/users.db"
+# Connect to the SQLite database
 conn = sqlite3.connect(db_path)
 cur = conn.cursor()
 
