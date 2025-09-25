@@ -8,6 +8,7 @@ from file.models import Media, Message, User
 from ..services.database import SessionLocal
 from ..services.email import email_service  # ✅ Import global email service
 from ..components.chat_area import (
+
     create_chat_header, create_input_area, create_messages_container,
     create_message_bubble
 )
@@ -43,6 +44,7 @@ def create_chat_interface(partner_id: int, container: ui.element) -> None:
                     'w-full h-full bg-black'
                 ).props('swipeable draggable transition-prev="slide-right" transition-next="slide-left"')
             
+
             # Function to open image viewer
             def open_image_viewer(media_items, start_index):
                 image_carousel.clear()
@@ -53,7 +55,9 @@ def create_chat_interface(partner_id: int, container: ui.element) -> None:
                                 'fit=contain'
                             ).classes('w-full h-screen')
                 target_slide_name = f'slide_{start_index}'
+
                 # Delay slide change to ensure rendering
+
                 ui.timer(0.1, lambda: image_carousel.set_value(target_slide_name), once=True)
                 image_dialog.open()
 
@@ -94,6 +98,7 @@ def send_message(input_field, images_to_upload: List[Dict], messages_container,
         db.commit()
 
         print(f"Message saved to DB - ID: {new_msg.id}")
+
         # Clear input field after sending
         input_field.set_value('')
 

@@ -73,6 +73,7 @@ class StartupChecker:
         print("\nChecking database connection...")
         
         try: # Try to create tables to verify DB connection
+
             db_service.create_all_tables()
             self._add_check("Database tables created successfully")
         except Exception as e:
