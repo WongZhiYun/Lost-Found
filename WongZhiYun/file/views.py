@@ -115,7 +115,6 @@ def post_detail(post_id):
             new_comment = Comment(text=text, user_id=current_user.id, post_id=post.id)
             db.session.add(new_comment)
             db.session.commit()
-            flash("Comment added!", "success")
         else:
             flash("Comment cannot be empty", "error")
         return redirect(url_for('views.post_detail', post_id=post.id))

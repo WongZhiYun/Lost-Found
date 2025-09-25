@@ -1,8 +1,9 @@
-<title>Edit Profile</title>
+{% extends "base.html" %}
+{% block title %}Edit Profile{% endblock %}
+{% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}">
 <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 
-{% block content %}
 <!-- Back button -->
 <a href="{{ url_for('views.profile') }}" class="back-link">
     <i class='bx bx-chevrons-left'></i> Back
@@ -18,9 +19,7 @@
                 <img src="{{ url_for('static', filename='profile_pics/' + user.profile_image) }}" 
                      alt="Profile Picture" class="profile-img">
             {% else %}
-                <div class="profile-placeholder" >
-                {{ user.username[0]|upper }}
-                </div>
+                <span class="profile-placeholder">{{ user.username[0]|upper }}</span>
             {% endif %}
                 <input type="file" name="profile_image" accept="image/*">
         </div>
