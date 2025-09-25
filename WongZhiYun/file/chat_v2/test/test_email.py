@@ -56,7 +56,7 @@ def show_config_status():
     print("Current configuration status:")
     
     try:
-        from config import config
+        from chat_config import config
         if config:
             print(f"SMTP host: {config.MAIL_HOST}")
             print(f"SMTP port: {config.MAIL_PORT}")
