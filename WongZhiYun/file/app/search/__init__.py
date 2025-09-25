@@ -155,7 +155,7 @@ def search_by_image():
 def combined_search():
     q = request.form.get('q', '').strip()
     category = request.form.get('category', '').strip()
-    alpha = 0.6  # 固定隐藏值
+    alpha = 0.6 
 
     query_hash = None
     if 'file' in request.files and request.files['file'].filename != '':

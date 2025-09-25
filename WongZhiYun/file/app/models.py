@@ -10,7 +10,7 @@ class Report(db.Model):
     type = db.Column(db.String(10), nullable=False)   # lost / found
     location = db.Column(db.String(50))
     category = db.Column(db.String(50))
-    image = db.Column(db.String(100))   # 注意：数据库列名是 image
+    image = db.Column(db.String(100))   
     date_posted = db.Column(db.DateTime, default=datetime.utcnow)
     user_id = db.Column(db.Integer)
     is_approved = db.Column(db.Boolean, default=False)

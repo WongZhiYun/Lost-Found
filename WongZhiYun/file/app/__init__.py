@@ -7,7 +7,7 @@ db = SQLAlchemy()
 def create_app(config_object=None):
     app = Flask(__name__, static_folder='static', template_folder='templates')
 
-    # DB 路径：指向 instance/users.db
+
     default_db_path = os.path.abspath(os.path.join(app.root_path, '..', 'instance', 'users.db'))
     default_db_uri = f"sqlite:///{default_db_path}"
 
