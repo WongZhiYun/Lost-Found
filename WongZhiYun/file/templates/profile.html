@@ -14,7 +14,7 @@
     <div class="profile-header">
         {% if user.profile_image %}
             <img src="{{ url_for('static', filename='profile_pics/' + user.profile_image) }}" 
-            alt="Profile Picture" class="profile-img">
+             class="profile-img">
         {% else %}
             <div class="profile-avatar">
             {{ user.username[0]|upper }}
