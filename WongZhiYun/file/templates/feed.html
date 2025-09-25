@@ -11,8 +11,21 @@
     </head>
 
     <body>
-        <nav class="navbar">
+        <!-- Flash messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        {% endwith %}
+        <!-- End flash messages -->
 
+        <nav class="navbar">
             <div class="nav-left">
                 <!-- Left: Menu Button -->
                 <a href="{{ url_for('views.home') }}">
@@ -34,14 +47,6 @@
                     <i class="fa-solid fa-comments"></i>
                 </div>
 
-                <!--chat window-->
-                <div id="chatWindow">
-                    <div id="chatHeader">
-                        <span>Live Chat</span>
-                        <button id="closeChat">✖</button>
-                    </div>
-                    <iframe id="chatFrame" src=""></iframe>
-                </div>
                 
                 <!-- Right: User Button -->
                 <i class= "fa-solid fa-user" onclick="toggleMenu()"></i>
@@ -60,7 +65,7 @@
                         <i class='bx bxs-user-detail'></i>
                         <p>My Profile</p>
                     </a>
-                    <a href="/" class="acc-menu-link">
+                    <a href="{{ url_for('views.edit_profile') }}" class="acc-menu-link">
                         <i class='bx bxs-edit'></i>
                         <p>Edit Profile</p>
                     </a>
@@ -127,17 +132,10 @@
     }
 
     const chatBtn = document.getElementById("chatButton");
-    const chatWindow = document.getElementById("chatWindow");
-    const chatFrame = document.getElementById("chatFrame");
-    const closeBtn = document.getElementById("closeChat");
-
+   
     chatBtn.onclick = () => {
-      chatFrame.src = "http://localhost:8080"; //chat app
-      chatWindow.style.display = "flex";
+        // Open the chat login page in a new tab
+        window.open("http://localhost:/login", "_blank");
     };
 
-    closeBtn.onclick = () => {
-      chatFrame.src = ""; // unload
-      chatWindow.style.display = "none";
-    };
 </script>
