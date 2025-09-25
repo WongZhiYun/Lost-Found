@@ -5,7 +5,8 @@ This is a modern chat application based on NiceGUI
 Features include: user authentication, chat, email notifications
 """
 import os
-STATIC_REAL_PATH = os.path.join(os.path.dirname(__file__), 'static')
+# 1 step up from chat_v2 → file
+from file.chat_v2.chat_config import STATIC_REAL_PATH
 print('>>> STATIC_REAL_PATH =', STATIC_REAL_PATH)
 print('>>> Exists?', os.path.exists(STATIC_REAL_PATH))
 from nicegui import app, ui
