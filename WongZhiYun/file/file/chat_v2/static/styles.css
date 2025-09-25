@@ -1,0 +1,377 @@
+/* Styles */
+:root {
+    --custom-bg: #f0f2f5;
+    --custom-panel-bg: #ffffff;
+    --custom-msg-bg-sent: #d9fdd3;
+    --custom-msg-bg-received: #ffffff;
+    --custom-border: #e9edef;
+    --custom-text-dark: #3b4a54;
+    --custom-text-light: #667781;
+    --custom-chat-bg: #efeae2;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    font-family: 'Segoe UI', Helvetica, Arial, sans-serif !important;
+    background-color: var(--custom-bg) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    /* Dynamic viewport height for mobile */
+    width: 100vw !important;
+    overflow: hidden !important;
+    /* Prevent mobile browser zooming on input focus */
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+}
+
+
+/* Main Layout */
+.custom-container {
+    display: flex;
+    height: 100vh;
+    height: 100dvh;
+    /* Dynamic viewport height for mobile */
+    width: 100vw;
+    background-color: var(--custom-bg);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+/* Left Sidebar */
+.custom-sidebar {
+    width: 340px;
+    background-color: var(--custom-panel-bg);
+    border-right: 1px solid var(--custom-border);
+    display: flex;
+    flex-direction: column;
+}
+
+.custom-sidebar-header {
+    background-color: var(--custom-panel-bg);
+    padding: 12px;
+    border-bottom: 1px solid var(--custom-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+/* Chat Area */
+.custom-chat {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--custom-chat-bg);
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><defs><pattern id="pattern" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" fill="rgba(0,0,0,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23pattern)"/></svg>');
+}
+
+.custom-chat-header {
+    background-color: var(--custom-panel-bg);
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--custom-border);
+    display: flex;
+    align-items: center;
+}
+
+.custom-messages {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column-reverse;
+    /* Messages start from bottom */
+    min-height: 0;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+    justify-content: flex-start;
+    /* When few messages, stick to bottom */
+}
+
+.custom-input-area {
+    background-color: var(--custom-panel-bg);
+    padding: 16px 20px;
+    border-top: 1px solid var(--custom-border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.custom-input-area input {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 20px;
+    background-color: var(--custom-bg);
+    font-size: 15px;
+}
+
+/* Dialog User Item */
+.custom-dialog-user-item {
+    padding: 12px 16px;
+    border-radius: 8px;
+    transition: background-color 0.2s ease;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.custom-dialog-user-item:hover {
+    background-color: var(--custom-bg) !important;
+}
+
+/* Message Bubbles */
+.custom-message {
+    max-width: 65%;
+    margin-top: 8px;
+    word-wrap: break-word;
+}
+
+.custom-message.sent {
+    align-self: flex-end;
+    background-color: var(--custom-msg-bg-sent);
+    border-radius: 7.5px 7.5px 0 7.5px;
+}
+
+.custom-message.received {
+    align-self: flex-start;
+    background-color: var(--custom-msg-bg-received);
+    border-radius: 7.5px 7.5px 7.5px 0;
+}
+
+/* First message (last in reverse order) gets bottom margin */
+.custom-message:last-child {
+    margin-bottom: 8px;
+}
+
+/* Conversation List Item */
+.custom-conversation-item {
+    padding: 12px 16px;
+    border-bottom: 1px solid #f2f2f2;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: background-color 0.1s;
+}
+
+.custom-conversation-item:hover {
+    background-color: var(--custom-bg);
+}
+
+
+
+/* Buttons */
+.custom-btn {
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+}
+
+
+/* Empty State */
+.custom-empty-state {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--custom-panel-bg);
+    border-left: 1px solid var(--custom-border);
+}
+
+/* Mobile hamburger menu */
+.mobile-menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: var(--custom-text-dark);
+    cursor: pointer;
+    padding: 8px;
+    margin-right: 12px;
+}
+
+/* Overlay for mobile sidebar - JavaScript controlled */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    pointer-events: none;
+}
+
+/* Mobile overlay when active - position controlled by JavaScript */
+@media (max-width: 768px) {
+    .sidebar-overlay.active {
+        display: block;
+        pointer-events: auto;
+    }
+}
+
+/* Desktop - ensure overlay is NEVER visible and sidebar is always accessible */
+@media (min-width: 769px) {
+
+    .sidebar-overlay,
+    .sidebar-overlay.active {
+        display: none !important;
+        pointer-events: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        z-index: -1 !important;
+    }
+
+    .custom-sidebar {
+        position: relative !important;
+        left: 0 !important;
+        z-index: auto !important;
+        pointer-events: auto !important;
+    }
+
+    .mobile-menu-btn {
+        display: none !important;
+    }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .custom-sidebar {
+        position: fixed;
+        top: 0;
+        left: -340px;
+        height: 100vh;
+        z-index: 1001;
+        /* Higher than overlay */
+        transition: left 0.3s ease;
+    }
+
+    .custom-sidebar.mobile-open {
+        left: 0;
+    }
+
+    .custom-chat {
+        width: 100%;
+        height: 100vh;
+        height: 100dvh;
+        /* Dynamic viewport height for mobile */
+        /* Ensure full height */
+        display: flex;
+        flex-direction: column;
+    }
+
+    .mobile-menu-btn {
+        display: block;
+    }
+
+    .custom-chat-header {
+        padding-left: 8px;
+        flex-shrink: 0;
+    }
+
+    .custom-messages {
+        flex: 1;
+        min-height: 0;
+        overflow-y: auto;
+    }
+
+    .custom-input-area {
+        flex-shrink: 0;
+        /* Don't shrink input area */
+        padding: 12px 16px;
+        min-height: 60px;
+        /* Ensure minimum height */
+        position: relative;
+        z-index: 10;
+        background-color: var(--custom-panel-bg);
+        border-top: 1px solid var(--custom-border);
+    }
+}
+
+@media (max-width: 480px) {
+    .custom-sidebar {
+        width: 280px;
+        left: -280px;
+    }
+
+    .custom-conversation-name {
+        font-size: 14px;
+    }
+
+    .custom-conversation-last-message {
+        font-size: 12px;
+    }
+
+    .custom-message {
+        max-width: 85%;
+    }
+
+    .custom-input-area {
+        padding: 10px 12px;
+        min-height: 56px;
+        /* Slightly smaller for very small screens */
+        flex-shrink: 0;
+        /* Ensure input area doesn't shrink */
+        position: relative;
+        z-index: 10;
+        background-color: var(--custom-panel-bg);
+        border-top: 1px solid var(--custom-border);
+        /* Ensure input stays at bottom */
+        bottom: 0;
+    }
+
+    .custom-input-area input {
+        font-size: 14px;
+        padding: 10px 14px;
+        /* Slightly smaller padding */
+    }
+
+    .custom-chat {
+        height: 100vh;
+        height: 100dvh;
+        /* Dynamic viewport height for mobile */
+        /* Full height on small screens */
+    }
+
+    .custom-messages {
+        padding: 16px;
+        /* Reduce padding on small screens */
+    }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.3);
+}
