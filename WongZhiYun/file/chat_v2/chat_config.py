@@ -5,7 +5,10 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
-
+STATIC_REAL_PATH = os.path.join(
+    os.path.dirname(os.path.dirname(__file__)),
+    'static'
+)
 class Config:
     """Application configuration class - central management of all configurations"""
     
@@ -25,12 +28,21 @@ class Config:
     # Database configuration (supports multiple databases)
     # ===============================================
     DB_CONNECTION = os.getenv('DB_CONNECTION', 'sqlite')
-    DB_DATABASE = os.getenv('DB_DATABASE', 'first.db')
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # WongZhiYun/
+    FILE_DIR = os.path.dirname(BASE_DIR)                       # .../file
+    STATIC_DIR = os.path.join(FILE_DIR, 'static')               # ✅ .../file/static
+    STATIC_URL = '/static'
+    DB_DATABASE = os.getenv(
+    'DB_DATABASE',
+    os.path.join(BASE_DIR, 'instance', 'users.db')
+)
+    
     DB_HOST = os.getenv('DB_HOST', 'localhost')
     DB_PORT = int(os.getenv('DB_PORT', 3306))
     DB_USERNAME = os.getenv('DB_USERNAME', 'root')
     DB_PASSWORD = os.getenv('DB_PASSWORD', '')
     
+
     @classmethod
     def get_database_url(cls) -> str:
         """Generate database connection URL"""

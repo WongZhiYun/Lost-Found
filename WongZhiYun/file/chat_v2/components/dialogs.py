@@ -70,9 +70,11 @@ def _create_user_item(user, dialog):
             dialog.close()
             ui.navigate.to(f'/?chat_with={u_id}')
         return start_chat
-    
+
     with ui.element('div').classes('custom-dialog-user-item').on('click', create_chat_handler(user.id)):
-        ui.image(f'https://robohash.org/{user.username}.png').classes('w-10 h-10 rounded-full object-cover mr-2 bg-gray-300')
-        with ui.element('div').classes('flex-1'):
+        # ✅ Use the real profile picture if available
+        profile_img_url = user.profile_image or "default.png"
+        ui.image(f"/static/profile_pics/{profile_img_url}").classes('w-10 h-10 rounded-full object-cover mr-2 bg-gray-300')
+        with ui.element('div').classes ('flex-1'):
             ui.label(str(user.username)).classes('font-medium text-gray-900')
             ui.label('Click to start chatting').classes('text-sm text-gray-500')

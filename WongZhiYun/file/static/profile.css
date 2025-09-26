@@ -157,15 +157,45 @@
     font-size: 15px;
 }
 
-.profile-img, .profile-placeholder {
+/* Outer wrapper: always a perfect circle */
+.profile-img {
     width: 100px;
     height: 100px;
     border-radius: 50%;
+    overflow: hidden;            /* keeps content inside the circle */
+    display: flex;               /* centers placeholder text */
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #333;   
+    background: #ece4c9;         /* fallback background if no image */
+    box-sizing: border-box; 
+    position: relative;
+}
+
+/* 🖼️ Actual image */
+.profile-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;           /* fills the circle without distortion */
+    border-radius: 50%;          /* ensures image corners are clipped */
+    display: block;
+}
+
+/* 🔤 Placeholder text or icon */
+.profile-placeholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
     font-size: 36px;
     font-weight: bold;
-    background-color: #537df1; /* placeholder background */
-    color: white;
-    margin-bottom: 10px;
+    width: 100%;
+    height: 100%;
+}
+
+input[type="file"] {
+    margin-top: 10px;  /* space below the avatar */
+    font-size: 14px;
 }
 
 .save-btn {

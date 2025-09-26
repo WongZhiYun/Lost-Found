@@ -1,11 +1,14 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from werkzeug.security import generate_password_hash, check_password_hash
+from itsdangerous import URLSafeSerializer
 from flask_login import login_user, logout_user, login_required
 from .models import User
-from . import db
+from . import db,mail
+from flask_mail import Message
 from .otp import generate_otp, send_otp_email
 
 auth = Blueprint('auth', __name__)
+s = URLSafeSerializer("hello")
 
 @auth.route('/login', methods=['GET','POST'])
 def login():
@@ -93,3 +96,44 @@ def verify_otp():
     else:
         flash("Invalid OTP. Try again.", category='error')
         return redirect(url_for('auth.sign_up'))
+
+# 1️⃣ Request Reset Page
+@auth.route('/forgot', methods=['GET', 'POST'])
+def forgot_password():
+    if request.method == 'POST':
+        email = request.form.get('email')
+        user = User.query.filter_by(email=email).first()
+        if user:
+            token = s.dumps(email, salt='reset-password')
+            link = url_for('auth.reset_password', token=token, _external=True)
+
+            msg = Message('Password Reset Request',
+                          sender='lostandfoundmmu@gmail.com',
+                          recipients=[email])
+            msg.body = f'Click the link to reset your password: {link}\n\nThis link expires in 30 minutes.'
+            mail.send(msg)
+
+            flash('Reset link sent to your email!', 'success')
+            return redirect(url_for('auth.login'))
+        else:
+            flash('No account found with that email.', 'error')
+    return render_template('forgot.html')
+
+# 2️⃣ Reset Password Page
+@auth.route('/reset/<token>', methods=['GET','POST'])
+def reset_password(token):
+    try:
+        email = s.loads(token, salt='reset-password', max_age=1800)  # 30 min expiry
+    except:
+        flash('The reset link is invalid or expired.', 'error')
+        return redirect(url_for('auth.forgot_password'))
+
+    if request.method == 'POST':
+        new_password = request.form.get('password')
+        user = User.query.filter_by(email=email).first()
+        if user:
+            user.password = generate_password_hash(new_password, method='pbkdf2:sha256')
+            db.session.commit()
+            flash('Your password has been reset!', 'success')
+            return redirect(url_for('auth.login'))
+    return render_template('reset.html')

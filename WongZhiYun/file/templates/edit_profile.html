@@ -1,8 +1,9 @@
-<title>Edit Profile</title>
+{% extends "base.html" %}
+{% block title %}Edit Profile{% endblock %}
+{% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}">
 <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 
-{% block content %}
 <!-- Back button -->
 <a href="{{ url_for('views.profile') }}" class="back-link">
     <i class='bx bx-chevrons-left'></i> Back
@@ -14,15 +15,14 @@
     <form action="{{ url_for('views.edit_profile') }}" method="POST" enctype="multipart/form-data">
         <!-- Profile Picture -->
         <div class="form-group">
-            {% if user.profile_image %}
-                <img src="{{ url_for('static', filename='profile_pics/' + user.profile_image) }}" 
-                     alt="Profile Picture" class="profile-img">
-            {% else %}
-                <div class="profile-placeholder" >
-                {{ user.username[0]|upper }}
-                </div>
-            {% endif %}
-                <input type="file" name="profile_image" accept="image/*">
+            <div class="profile-img">
+                {% if user.profile_image and user.profile_image != 'default.png' %}
+                    <img src="{{ url_for('static', filename='profile_pics/' + user.profile_image) }}" >
+                {% else %}
+                    <span class="profile-placeholder">{{ user.username[0]|upper }}</span>
+                {% endif %}
+            </div>
+            <input type="file" name="profile_image" accept="image/*" >
         </div>
 
         <!-- Username -->

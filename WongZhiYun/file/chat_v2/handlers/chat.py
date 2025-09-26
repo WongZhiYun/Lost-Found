@@ -14,6 +14,7 @@ from ..components.chat_area import (
 )
 from pathlib import Path
 from typing import List, Dict
+from file.chat_v2.chat_config import STATIC_REAL_PATH
 
 
 def create_chat_interface(partner_id: int, container: ui.element) -> None:
@@ -142,7 +143,7 @@ def _reload_and_display_messages(db, current_user_id, partner_id, container, ope
 
 def _save_uploaded_images(images_to_upload: List[Dict]) -> List[str]:
     saved_filenames = []
-    uploads_dir = Path('static/uploads')
+    uploads_dir = Path(STATIC_REAL_PATH) / 'uploads'
     uploads_dir.mkdir(parents=True, exist_ok=True)
     for image_data in images_to_upload:
         file_path = uploads_dir / image_data['uuid_name']

@@ -395,3 +395,34 @@ body h1 {
 
 .badge.lost { background: #e74c3c; color: white; }
 .badge.found { background: #3498db; color: white; }
+
+.flash-messages {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 15px;
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+}
+
+.alert {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    margin: 5px 0;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.alert-error {
+    background-color: #f8d7da;
+    color: #721c24;
+}

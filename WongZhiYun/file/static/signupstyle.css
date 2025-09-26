@@ -83,6 +83,19 @@ form{
     font-size: 20px;
 }
 
+
+.input-box i.fa-lock {
+    right: 20px;
+}
+
+.input-box i.fa-eye,
+.input-box i.fa-eye-slash {
+    right: 50px;     /* Eye stays on the right */
+    left: auto;
+    width: 24px;     /* Keep width fixed to stop shifting */
+    text-align: center;
+}
+
 .tandc-link{
     margin: -15px 0 20px;
     display: flex;
@@ -140,4 +153,33 @@ form{
     color: #365edc;  /* darker blue on hover */
 }
 
+.flash-messages {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 15px;
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+}
 
+.alert {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    margin: 5px 0;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.alert-error {
+    background-color: #f8d7da;
+    color: #721c24;
+}

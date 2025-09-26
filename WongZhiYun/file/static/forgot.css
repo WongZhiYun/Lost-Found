@@ -1,0 +1,60 @@
+/* Page background and centering */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;                 /* full screen height */
+    background: #f5f5f5;               /* soft gray background */
+}
+
+/* Form container */
+.forgot-container {
+    background: #ffffff;               /* white card */
+    padding: 40px 35px;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    width: 350px;                      /* fixed width for nice proportions */
+    text-align: center;
+}
+
+/* Title */
+.forgot-container h2 {
+    margin-bottom: 25px;
+    color: #444;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+/* Input field */
+.forgot-container input[type="password"] {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.forgot-container input[type="password"]:focus {
+    border-color: #918674; /* accent color when focusing */
+}
+
+/* Submit button */
+.forgot-container button {
+    margin-top: 20px;
+    width: 100%;
+    padding: 12px;
+    background: #918674;      /* warm accent */
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.forgot-container button:hover {
+    background: #7f7464;      /* slightly darker on hover */
+}

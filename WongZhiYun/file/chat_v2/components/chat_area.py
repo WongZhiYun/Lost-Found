@@ -25,7 +25,12 @@ def create_chat_header(partner, on_menu_click: Callable) -> None:
     with ui.element('div').classes('custom-chat-header'):
                 # Mobile sidebar menu button
         ui.icon('menu').classes('mobile-menu-btn').on('click', on_menu_click)
-        ui.image(f'https://robohash.org/{partner.username}.png').classes('h-12 w-12 rounded-full flex-shrink-0 bg-gray-300')
+
+        profile_url = partner.profile_image or "default.png"
+
+        # Display user profile image
+        ui.image(f"/static/profile_pics/{profile_url}").classes('w-10 h-10 rounded-full')        
+        
         with ui.element('div').classes('ml-3'):
                     # Username label
             ui.label(safe_str(partner.username)).classes('text-lg font-medium text-gray-900')
