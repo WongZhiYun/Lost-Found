@@ -13,7 +13,11 @@
                 <h1>MMU<br>Lost And Found</h1>
                 <p>Wonder where is your stuffs or found something but not belongs to you?</p>
                 <div>
-                    <a href="{{ url_for('views.feed', type='lost') }}">
+                    <a href="{% if current_user.is_authenticated %}
+                            {{ url_for('views.feed', type='lost') }}
+                            {% else %}
+                            {{ url_for('auth.login', next=url_for('views.feed', type='lost')) }}
+                            {% endif %}">
                         <button type="button">START</button>
                     </a>
                 </div>
