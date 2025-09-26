@@ -110,7 +110,7 @@
                             {{ post.location }}
                             </a>
                         </p>
-                        <small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
+                        <small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d')}} • Posted by {{ post.author.username }}</small>
                         
                         {% if post.is_closed %}
                             <span class="ribbon">Founded</span>
