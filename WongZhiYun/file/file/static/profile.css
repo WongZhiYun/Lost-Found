@@ -1,0 +1,200 @@
+/* Profile Page Container */
+.profile-container {
+    max-width: 950px;
+    margin: 100px auto;
+    padding: 30px;
+    background: #f5f5eb;
+    border-radius: 20px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    font-family: "Poppins", sans-serif;
+}
+
+/* Profile Header Section */
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    padding-bottom: 25px;
+    border-bottom: 2px solid #918674;
+}
+
+.profile-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #4a6cf7, #6fa8f7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    color: #fff;
+    font-weight: bold;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.2);
+}
+
+.profile-info h2 {
+    font-size: 28px;
+    margin: 0;
+    color: #2d2d2d;
+}
+
+.profile-info p {
+    margin: 6px 0;
+    font-size: 15px;
+    color: #666;
+}
+
+.back-link {
+    position: fixed;
+    top: 500px;
+    left: 20px;
+    font-size: 20px;
+    color: #333;
+    text-decoration: none;
+}
+
+.back-link:hover {
+    color: #776e52; /* hover color */
+}
+
+
+/* Action buttons (edit/logout) */
+.profile-actions {
+    margin-top: 10px;
+}
+
+.profile-actions a {
+    display: inline-block;
+    margin-right: 10px;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    border-radius: 25px;
+    background: #7b5c48;
+    color: #fff;
+    transition: 0.3s ease;
+}
+
+.profile-actions a:hover {
+    background: #c0ab9a;
+}
+
+/* Section for posts */
+.profile-posts {
+    margin-top: 35px;
+}
+
+.profile-posts h2 {
+    font-size: 22px;
+    margin-bottom: 20px;
+    color: #333;
+    border-left: 5px solid #776e52;
+    padding-left: 12px;
+}
+
+/* Post cards */
+.post-card {
+    max-width: 300px;
+    background: #f7faff;
+    border-radius: 15px;
+    padding: 20px;
+    margin: 0 auto 20px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.post-card img {
+    width: 100%;          /* fills the card width */
+    max-height: 250px;    /* limit the height so it’s not too tall */
+    object-fit: cover;    /* crops while keeping aspect ratio */
+    border-radius: 12px;  /* match the card’s rounded corners */
+    margin-bottom: 12px;  /* space below the image */
+    display: block;       /* removes inline gaps */
+}
+
+.post-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+}
+
+.post-card h4 {
+    margin: 0 0 10px;
+    font-size: 18px;
+    color: #2d2d2d;
+}
+
+.post-card p {
+    margin: 0 0 8px;
+    font-size: 15px;
+    color: #555;
+}
+
+.post-card small {
+    display: block;
+    margin-top: 10px;
+    font-size: 13px;
+    color: #888;
+}
+
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    font-weight: 500;
+    display: block;
+    margin-bottom: 6px;
+    color: #333;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 15px;
+}
+
+.profile-img, .profile-placeholder {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    font-size: 36px;
+    font-weight: bold;
+    background-color: #537df1; /* placeholder background */
+    color: white;
+    margin-bottom: 10px;
+}
+
+.save-btn {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    font-size: 16px;
+    font-weight: bold;
+    background: #918674;
+    color: #fff;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.save-btn:hover {
+    background: #72695c;
+}
+
+.btn-close {
+    background-color: #72695c;
+    border: none;
+    padding: 5px 10px;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 0.9rem;
+}
+.btn-close:hover {
+    background-color: #918674;
+}

@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}{{ post.title }}{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='post_detail.css') }}">
+
+<div class="post-detail">
+    <h1>{{ post.title }}</h1>
+    
+    {% if post.image %}
+        <img src="{{ url_for('static', filename='uploads/' + post.image) }}" style="max-width:400px;">
+    {% endif %}
+
+    <hr>
+
+    <h3>Description</h3>
+    <p>{{ post.description }}</p>
+    <small>Posted by {{ post.author.username }} on {{ post.date_posted.strftime('%Y-%m-%d') }}</small>
+
+    <hr>
+
+    <h3>Comments</h3>
+    {% for c in comments %}
+    <div class="comment">
+        <div class="comment-avatar-wrapper">
+            {% if c.user.profile_image %}
+                <img class="comment-avatar"
+                     src="{{ url_for('static', filename='profile_pics/' + c.user.profile_image) }}"
+                     alt="{{ c.user.username }}'s avatar">
+            {% else %}
+                <div class="comment-avatar comment-initial">
+                    {{ c.user.username[0]|upper }}
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="comment-body">
+            <a href="{{ url_for('views.public_profile', user_id=c.user.id) }}"
+               class="comment-username">{{ c.user.username }}</a>
+            <p class="comment-text">{{ c.text }}</p>
+            <small class="comment-date">{{ c.date_posted.strftime('%Y-%m-%d %H:%M') }}</small>
+        </div>
+    </div>
+    {% else %}
+      <p>No comments yet.</p>
+    {% endfor %}
+    
+
+    <form method="POST" class="comment-form">
+        <textarea name="comment" rows="3" placeholder="Write a comment..." required></textarea>
+        <button type="submit">Post Comment</button>
+    </form>
+</div>
+{% endblock %}
