@@ -33,6 +33,7 @@ def login():
 @login_required
 def logout():
     logout_user()
+    flash ("You've logout!" , category="success")
     return redirect(url_for('views.home'))
 
 @auth.route('/sign_up', methods=['GET', 'POST'])

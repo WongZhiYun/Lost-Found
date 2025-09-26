@@ -169,6 +169,7 @@
     border: 2px solid #333;   
     background: #ece4c9;         /* fallback background if no image */
     box-sizing: border-box; 
+    position: relative;
 }
 
 /* 🖼️ Actual image */
@@ -182,11 +183,20 @@
 
 /* 🔤 Placeholder text or icon */
 .profile-placeholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     color: #fff;
     font-size: 36px;
     font-weight: bold;
+    width: 100%;
+    height: 100%;
 }
 
+input[type="file"] {
+    margin-top: 10px;  /* space below the avatar */
+    font-size: 14px;
+}
 
 .save-btn {
     display: block;
