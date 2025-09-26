@@ -100,3 +100,77 @@ hr {
     font-size: 1.6rem;
     margin: 2rem 0 3rem;
 }
+
+.services{
+    padding: 100px 0;
+}
+
+.max-width{
+    max-width: 1300px;
+    padding: 0 45px;
+    margin: auto;
+}
+
+.max-width h1{
+    text-align: center;
+    position: relative;
+    font-size: 40px;
+    font-weight: 500;
+    margin-bottom: 60px;
+    padding-bottom: 20px;
+}
+
+.max-width h1::after{
+    content: "";
+    position: absolute;
+    width: 170px;
+    height: 3px;
+    background: #7b5c4b;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.content{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    color: #f5f5eb;
+}
+
+.service-cards{
+    padding: 50px 25px;
+    width:calc(26% - 20px);
+    border-radius: 6px;
+    background: #80685a;
+    text-align: center;
+    user-select: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.service-cards:hover{
+    background-color: #918674;
+}
+
+.service-card{
+    transition: all 0.3s ease;
+}
+
+.service-cards:hover .service-card{
+    transform: scale(1.05);
+}
+
+.service-card i{
+    font-size: 50px;
+    color: #ebbca2;
+    transition: color 0.3 ease;
+}
+
+.service-cards:hover .service-card i{
+    color: #f5f5eb;
+}
+
+.service-card h3{
+    font-size: 25px;
+    padding: 10px 0 7px;
+}
