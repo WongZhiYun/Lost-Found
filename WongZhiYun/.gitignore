@@ -1,0 +1,14 @@
+
+# Python 缓存文件
+__pycache__/
+*.pyc
+
+# macOS 系统缓存
+.DS_Store
+
+# 数据库文件
+*.db
+WongZhiYun/instance/users.db
+
+__pycache__/
+*.pyc

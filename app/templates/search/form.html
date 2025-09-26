@@ -1,0 +1,13 @@
+<!doctype html>
+<html>
+<head>
+  <title>Image Search</title>
+</head>
+<body>
+  <h1>Search by Image</h1>
+  <form action="{{ url_for('search.search_by_image') }}" method="post" enctype="multipart/form-data">
+    <input type="file" name="file" required />
+    <button type="submit">Search</button>
+  </form>
+</body>
+</html>

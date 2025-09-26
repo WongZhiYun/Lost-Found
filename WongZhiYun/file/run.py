@@ -1,3 +1,6 @@
+import sys, os
+sys.path.append(os.path.dirname(__file__))
+
 """
 run.py
 Purpose:Entry point script for the application.Calls the create_app factory to build the Flask app instance, then start Flask's development server(for development).
