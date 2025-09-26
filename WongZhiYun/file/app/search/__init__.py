@@ -7,19 +7,22 @@ import imagehash
 from app import db
 from app.models import Report
 
-
-# create blueprint
+# Define a Blueprint for search-related features
 bp = Blueprint('search', __name__, template_folder='templates')
 
+# ---------- helpers ----------
 def get_upload_folder():
-    return current_app.config.get('UPLOAD_FOLDER', os.path.join(current_app.root_path, 'static', 'uploads'))
+    # Get upload folder
+    return current_app.config.get('UPLOAD_FOLDER', os.path.abspath(os.path.join(current_app.root_path, 'static', 'uploads')))
 
 def compute_image_hash(image_path):
+    # Compute perceptual hash (pHash) for an image
     img = Image.open(image_path).convert('RGB')
     h = imagehash.phash(img)
     return str(h)
 
 def hamming_distance_hex(hash_hex1, hash_hex2):
+     # Compute Hamming distance between two image hashes
     if not hash_hex1 or not hash_hex2:
         return None
     try:
@@ -30,6 +33,7 @@ def hamming_distance_hex(hash_hex1, hash_hex2):
         return None
 
 def image_similarity_from_distance(distance, hash_hex):
+    # Convert Hamming distance to similarity score
     if distance is None:
         return 0.0
     try:
@@ -40,6 +44,7 @@ def image_similarity_from_distance(distance, hash_hex):
     return sim
 
 def simple_text_score(item, q):
+    # Simple text matching score (title/description/location)
     if not q:
         return 0.0
     q_lower = q.lower()
@@ -48,23 +53,24 @@ def simple_text_score(item, q):
         score += 0.6
     if getattr(item, 'description', None) and q_lower in item.description.lower():
         score += 0.4
-    if getattr(item, 'place', None) and q_lower in item.place.lower():
+    if getattr(item, 'location', None) and q_lower in item.location.lower():
         score += 0.2
     return min(score, 1.0)
 
 def combine_scores(text_score, image_score, alpha=0.6):
+    # Combine text & image scores, alpha weights image more
     return alpha * image_score + (1 - alpha) * text_score
 
+# ---------- routes ----------
 @bp.route('/', methods=['GET'])
 def search_page():
+    # Search page (keyword/category filter, returns HTML)
     q = request.args.get('q', '').strip()
     category = request.args.get('category', '').strip()
     page = max(1, int(request.args.get('page', 1)))
     per_page = 10
 
-    query = Report.query
-    # only see approved
-    query = query.filter(Report.status == 'approved')
+    query = Report.query.filter(Report.is_approved == True)
 
     if category:
         query = query.filter(Report.category == category)
@@ -74,11 +80,11 @@ def search_page():
         query = query.filter(
             (Report.title.ilike(like_q)) |
             (Report.description.ilike(like_q)) |
-            (Report.place.ilike(like_q))
+            (Report.location.ilike(like_q))
         )
 
     total = query.count()
-    results = query.order_by(Report.created_at.desc()).offset((page-1)*per_page).limit(per_page).all()
+    results = query.order_by(Report.date_posted.desc()).offset((page-1)*per_page).limit(per_page).all()
 
     scored = []
     for r in results:
@@ -86,18 +92,14 @@ def search_page():
         scored.append({'report': r, 'text_score': ts, 'image_score': 0.0, 'final_score': ts})
 
     scored_sorted = sorted(scored, key=lambda x: x['final_score'], reverse=True)
-
     return render_template('search/results.html', results=scored_sorted, q=q, category=category, page=page, total=total)
 
 @bp.route('/api', methods=['GET'])
 def search_api():
-    """
-    JSON API: return basic fields + text_score + image_hash.
-    """
+    # Provide JSON search results (for API use)
     q = request.args.get('q', '').strip()
     category = request.args.get('category', '').strip()
-    query = Report.query
-    query = query.filter(Report.status == 'approved')
+    query = Report.query.filter(Report.is_approved == True)
 
     if category:
         query = query.filter(Report.category == category)
@@ -106,10 +108,10 @@ def search_api():
         query = query.filter(
             (Report.title.ilike(like_q)) |
             (Report.description.ilike(like_q)) |
-            (Report.place.ilike(like_q))
+            (Report.location.ilike(like_q))
         )
 
-    results = query.order_by(Report.created_at.desc()).limit(200).all()
+    results = query.order_by(Report.date_posted.desc()).limit(200).all()
     data = []
     for r in results:
         ts = simple_text_score(r, q)
@@ -117,19 +119,16 @@ def search_api():
             'id': r.id,
             'title': r.title,
             'category': r.category,
-            'place': r.place,
-            'image': url_for('static', filename='uploads/' + (r.image_filename or '')) if r.image_filename else None,
+            'location': r.location,
+            'image': url_for('static', filename='uploads/' + (r.image or '')) if r.image else None,
             'text_score': ts,
             'image_hash': r.image_hash
         })
     return jsonify({'results': data})
 
-
 @bp.route('/by-image', methods=['POST'])
 def search_by_image():
-    """
-    image upload -> compute hash -> compare with DB image_hash -> show results.
-    """
+    # Search reports by uploaded image similarity
     if 'file' not in request.files:
         return "No file part", 400
     file = request.files['file']
@@ -148,8 +147,7 @@ def search_by_image():
         current_app.logger.error(f"Hash compute error: {e}")
         return "Error processing image", 500
 
-    candidates = Report.query.filter(Report.status == 'approved').all()
-
+    candidates = Report.query.filter(Report.is_approved == True).all()
     scored = []
     for r in candidates:
         if not r.image_hash:
@@ -161,18 +159,14 @@ def search_by_image():
         scored.append({'report': r, 'image_distance': distance, 'image_score': img_score, 'text_score': 0.0, 'final_score': img_score})
 
     scored_sorted = sorted(scored, key=lambda x: x['final_score'], reverse=True)[:20]
-
     return render_template('search/results.html', results=scored_sorted, q='[image search]', category='')
 
 @bp.route('/combined', methods=['POST'])
 def combined_search():
-    """
-    Accept q (optional) + file (optional) + alpha (weight for image).
-    Combine text_score and image_score into final_score and render results.
-    """
+    # Combined text + image search
     q = request.form.get('q', '').strip()
     category = request.form.get('category', '').strip()
-    alpha = float(request.form.get('alpha', 0.6))
+    alpha = 0.6 
 
     query_hash = None
     if 'file' in request.files and request.files['file'].filename != '':
@@ -188,7 +182,7 @@ def combined_search():
             current_app.logger.error(f"Hash compute error: {e}")
             query_hash = None
 
-    query = Report.query.filter(Report.status == 'approved')
+    query = Report.query.filter(Report.is_approved == True)
     if category:
         query = query.filter(Report.category == category)
     if q:
@@ -196,11 +190,10 @@ def combined_search():
         query = query.filter(
             (Report.title.ilike(like_q)) |
             (Report.description.ilike(like_q)) |
-            (Report.place.ilike(like_q))
+            (Report.location.ilike(like_q))
         )
 
-    candidates = query.order_by(Report.created_at.desc()).limit(200).all()
-
+    candidates = query.order_by(Report.date_posted.desc()).limit(200).all()
     scored = []
     for r in candidates:
         ts = simple_text_score(r, q) if q else 0.0
