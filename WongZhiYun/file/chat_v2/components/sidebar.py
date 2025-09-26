@@ -46,8 +46,9 @@ def _create_sidebar_header(db, current_user_id: int):
             # Current user avatar
             current_user = db.query(User).get(current_user_id)
             if current_user:
-                ui.image(f'https://robohash.org/{current_user.username}.png').classes('w-12 h-12 rounded-full flex-shrink-0 bg-gray-300')
-                
+                profile_img_url = current_user.profile_image or "default.png"
+                ui.image(f"/static/profile_pics/{profile_img_url}").classes('w-12 h-12 rounded-full flex-shrink-0 bg-gray-300')
+            
             
             ui.space()
             
@@ -146,7 +147,8 @@ def _create_conversation_item(partner_id: int, data: dict):
     
     # Conversation item container
     with ui.element('div').classes('custom-conversation-item').on('click', create_click_handler(partner_id)):
-        ui.image(f'https://robohash.org/{partner.username}.png').classes('w-12 h-12 rounded-full flex-shrink-0 bg-gray-300')
+        profile_img_url = partner.profile_image or "default.png"
+        ui.image(f"/static/profile_pics/{profile_img_url}").classes('w-12 h-12 rounded-full flex-shrink-0 bg-gray-300')
 
         # Conversation details (name + last message)
         with ui.element('div').classes('flex-1 min-w-0'):
