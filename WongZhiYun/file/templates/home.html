@@ -4,6 +4,7 @@
 {% block content %}
 
 <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css">
 <!-- Home Section -->
 <body>
     <section class="home" id="home">
@@ -43,5 +44,37 @@
 
     <hr>
     
+    <section class="services" id="Services">
+        <div class="max-width">
+            <h1>Our Services</h1>
+            <div class="content">
+                <div class="service-cards">
+                    <!-- Service 1 -->
+                    <div class="service-card">
+                        <i class="fa-regular fa-pen-to-square"></i>
+                        <h3>Post Found/Lost Items</h3>
+                        <p>Found something? Lost something? Share details to help the rightful owner reclaim it safely and post your lost belonging.</p>
+                    </div>
+                </div>
+                <div class="service-cards">
+                    <!-- Service 2 -->
+                    <div class="service-card">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <h3>Search Listings</h3>
+                        <p>Browse all lost and found reports with smart filters for faster results.</p>
+                    </div>
+                </div>
+                <div class="service-cards">
+                    <!-- Service 3 -->
+                    <div class="service-card">
+                        <i class="fa-regular fa-comment"></i>
+                        <h3>Chat Function</h3>
+                        <p>Connect instantly with other users through our built-in chat system.  
+                            Discuss found items, share details, and coordinate safe handovers in real time.
+                        </p>
+                </div>
+            </div>
+        </div>
+    </section>
 </body>
 {% endblock %}

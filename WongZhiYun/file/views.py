@@ -45,6 +45,7 @@ def report_post():
         db.session.add(new_post)
         db.session.commit()
 
+        flash("Posts created! Waiting for approve!", "success")
         return redirect(url_for('views.feed'))
 
     return render_template('report.html')

@@ -1,11 +1,28 @@
-/* General Layout */
 body {
   background-color: #f8f9fa;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: #333;
+  padding-top: 0; 
 }
 
-/* Dashboard Title */
+.btn-logout {
+  background-color: #444;  
+  color: #fff;             
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  transition: background-color 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+}
+
+.btn-logout:hover {
+  background-color: #222;  
+  color: #f1f1f1;
+}
+
 h1 {
   margin-bottom: 25px;
   font-weight: 600;
@@ -13,14 +30,12 @@ h1 {
   text-align: center;
 }
 
-/* Chart Row */
 .charts-row {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
 }
 
-/* Chart Cards */
 .chart-card {
   flex: 1;
   min-width: 280px;
@@ -29,14 +44,12 @@ h1 {
   overflow: hidden;
 }
 
-/* Card Headers */
 .card-header {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
-/* Pending & Approved Cards */
 .bg-warning {
   background-color: #cbb682 !important; /* softer gold */
   color: #333 !important;
@@ -55,7 +68,6 @@ h1 {
   background-color: #60553f !important; /* neutral grey */
 }
 
-/* Buttons */
 .btn-success {
   background-color: #6f8f64;
   border: none;
@@ -74,7 +86,6 @@ h1 {
   background-color: #913c3c;
 }
 
-/* Post List */
 .list-group-item {
   border: 1px solid #e1e1e1;
   border-radius: 8px;
