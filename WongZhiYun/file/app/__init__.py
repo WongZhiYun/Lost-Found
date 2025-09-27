@@ -12,7 +12,7 @@ def create_app(config_object=None):
 
      # --- Database path setup ---
      #Default database path
-    default_db_path = "/Users/chloechew/Documents/Lost-Found/WongZhiYun/instance/users.db"
+    default_db_path = "/Users/HP/Group13/Lost-Found/instance/users.db"
     default_db_uri = f"sqlite:///{default_db_path}"
 
      # --- App configuration ---

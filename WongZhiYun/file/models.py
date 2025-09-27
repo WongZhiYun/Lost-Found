@@ -14,7 +14,7 @@ class User(db.Model, UserMixin):
     profile_image = db.Column(db.String(200), default="default.png")
     comments = db.relationship('Comment', backref='user', lazy=True)
 
-     # -------------------- Password Methods --------------------
+     # -------------------- Check Chat Password Methods --------------------
     def set_password(self, password):
         self.password = generate_password_hash(password)
 
@@ -27,8 +27,8 @@ class Post(db.Model):
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text, nullable=False)
     type = db.Column(db.String(10), nullable=False)  # "lost" or "found"
-    location = db.Column(db.String(50), nullable=True) # optional
-    category = db.Column(db.String(50), nullable=True) # optional
+    location = db.Column(db.String(50), nullable=True) 
+    category = db.Column(db.String(50), nullable=True) 
     image = db.Column(db.String(100))  # filename if uploaded
     date_posted = db.Column(db.DateTime, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
