@@ -9,6 +9,11 @@ STATIC_REAL_PATH = os.path.join(
     os.path.dirname(os.path.dirname(__file__)),
     'static'
 )
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # WongZhiYun/
+FILE_DIR = os.path.dirname(BASE_DIR)                       # .../file
+STATIC_DIR = os.path.join(FILE_DIR, 'static')               # ✅ .../file/static
+STATIC_URL = '/static'
+
 class Config:
     """Application configuration class - central management of all configurations"""
     
@@ -28,10 +33,6 @@ class Config:
     # Database configuration (supports multiple databases)
     # ===============================================
     DB_CONNECTION = os.getenv('DB_CONNECTION', 'sqlite')
-    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # WongZhiYun/
-    FILE_DIR = os.path.dirname(BASE_DIR)                       # .../file
-    STATIC_DIR = os.path.join(FILE_DIR, 'static')               # ✅ .../file/static
-    STATIC_URL = '/static'
     DB_DATABASE = os.getenv(
     'DB_DATABASE',
     os.path.join(BASE_DIR, 'instance', 'users.db')
